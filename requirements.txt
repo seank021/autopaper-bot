@@ -5,3 +5,4 @@ openai
 PyMuPDF
 python-dotenv
 requests
+gunicorn
