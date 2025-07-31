@@ -8,7 +8,6 @@ from utils.link_utils import download_pdf_from_link
 import os
 from dotenv import load_dotenv
 import requests
-import re
 
 # Load environment variables
 load_dotenv()

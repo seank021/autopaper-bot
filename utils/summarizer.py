@@ -8,10 +8,10 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def summarize_text(text):
     text = text[:3000] # OpenAI API has a token limit, so we truncate the text
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that summarizes academic papers."},
-            {"role": "user", "content": f"Please summarize the following paper within one sentence in English:\n{text}"}
+            {"role": "user", "content": f"Please summarize the following paper within 30 words in English. Explain in clear, easy-to-understand, and fun language:\n{text}"}
         ]
     )
     return response.choices[0].message.content.strip()
