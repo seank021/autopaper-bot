@@ -11,7 +11,7 @@ def summarize_text(text):
         model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are a helpful assistant that summarizes academic papers."},
-            {"role": "user", "content": f"Please summarize the following paper in within 5 sentences in English:\n{text}"}
+            {"role": "user", "content": f"Please summarize the following paper within one sentence in English:\n{text}"}
         ]
     )
     return response.choices[0].message.content.strip()
