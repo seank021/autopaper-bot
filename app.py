@@ -4,27 +4,34 @@ from flask import Flask, request
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text
 from utils.interest_matcher import match_members
-from utils.link_utils import download_pdf_from_link
+from utils.link_utils import process_link_download
+from utils.path_utils import get_pdf_path_from_thread, get_meta_path_from_thread
 import os
-from dotenv import load_dotenv
+import json
 import requests
+from dotenv import load_dotenv
+from subprocess import run
 
-# Load environment variables
 load_dotenv()
 
 app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SIGNING_SECRET"))
 flask_app = Flask(__name__)
 handler = SlackRequestHandler(app)
 
-# Message event handler
 @app.event("message")
 def handle_message(event, say, client, logger):
     logger.info(event)
 
     text = event.get("text", "")
     subtype = event.get("subtype")
+    thread_ts = event["ts"]
+    channel_id = event["channel"]
+    user_id = event.get("user") or event.get("message", {}).get("user")
 
-    # ==================== 1. PDF upload ====================
+    pdf_path = get_pdf_path_from_thread(thread_ts)
+    meta_path = get_meta_path_from_thread(thread_ts)
+
+    # ========== Case 1: PDF file upload ==========
     if subtype == "file_share":
         file_info = event["files"][0]
         if file_info["filetype"] != "pdf":
@@ -32,26 +39,42 @@ def handle_message(event, say, client, logger):
             return
 
         logger.info(f"PDF 감지: {file_info['name']}")
-
         pdf_url = file_info["url_private_download"]
         headers = {"Authorization": f"Bearer {os.getenv('SLACK_BOT_TOKEN')}"}
         response = requests.get(pdf_url, headers=headers)
 
-        os.makedirs("temp", exist_ok=True)
-        with open("temp/temp.pdf", "wb") as f:
+        with open(pdf_path, "wb") as f:
             f.write(response.content)
 
-        text = extract_text_from_pdf("temp/temp.pdf")
-        post_summary_reply(client, event["channel"], event["ts"], text)
+        with open(meta_path, "w") as f:
+            json.dump({
+                "user": user_id,
+                "channel": channel_id,
+                "timestamp": thread_ts,
+                "filename": file_info.get("name", "unknown.pdf"),
+                "source": "uploaded"
+            }, f, indent=2)
+
+        text = extract_text_from_pdf(pdf_path)
+        post_summary_reply(client, channel_id, thread_ts, text)
         return
 
-    # ==================== 2. Paper link ====================
-    if download_pdf_from_link(text):
-        text = extract_text_from_pdf("temp/temp.pdf")
-        post_summary_reply(client, event["channel"], event["ts"], text)
+    # ========== Case 2: Link to paper ==========
+    success, source_link, filename = process_link_download(text, pdf_path)
+    if success:
+        with open(meta_path, "w") as f:
+            json.dump({
+                "user": user_id,
+                "channel": channel_id,
+                "timestamp": thread_ts,
+                "filename": filename or os.path.basename(pdf_path),
+                "source": source_link
+            }, f, indent=2)
+
+        text = extract_text_from_pdf(pdf_path)
+        post_summary_reply(client, channel_id, thread_ts, text)
         return
 
-# Summarize and post reply
 def post_summary_reply(client, channel, thread_ts, text):
     summary = summarize_text(text)
     user_ids = match_members(summary)
@@ -76,12 +99,15 @@ def post_summary_reply(client, channel, thread_ts, text):
         ]
     )
 
-# Ignore file_shared events
 @app.event("file_shared")
 def handle_file_shared_events(body, logger):
     logger.info("file_shared 이벤트는 message 이벤트에서 처리하므로 무시함")
 
-# Slack event endpoint
+@flask_app.route("/cleanup", methods=["POST"])
+def trigger_cleanup():
+    run(["python", "cleanup_temp.py"])
+    return "Cleanup triggered", 200
+
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
     if request.headers.get("Content-Type") == "application/json":
