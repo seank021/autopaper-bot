@@ -1,0 +1,7 @@
+flask
+slack_bolt
+slack_sdk
+openai
+PyMuPDF
+python-dotenv
+requests
