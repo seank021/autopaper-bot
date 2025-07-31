@@ -1,22 +1,28 @@
 from slack_bolt import App
 from slack_bolt.adapter.flask import SlackRequestHandler
 from flask import Flask, request
+from dotenv import load_dotenv
+import os
+import requests
+from subprocess import run
+
+# === Custom utility modules ===
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text
 from utils.interest_matcher import match_members
 from utils.link_utils import process_link_download
-from utils.path_utils import get_pdf_path_from_thread
-import os
-import requests
-from dotenv import load_dotenv
-from subprocess import run
+from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
+from utils.supabase_db import insert_metadata, get_metadata
+from utils.openai_utils import answer_question
 
 load_dotenv()
 
+# === Slack app setup ===
 app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SIGNING_SECRET"))
 flask_app = Flask(__name__)
 handler = SlackRequestHandler(app)
 
+# === 논문 업로드/링크 감지 이벤트 ===
 @app.event("message")
 def handle_message(event, say, client, logger):
     logger.info(event)
@@ -26,9 +32,11 @@ def handle_message(event, say, client, logger):
     thread_ts = event["ts"]
     channel_id = event["channel"]
     user_id = event.get("user") or event.get("message", {}).get("user")
+
+    thread_hash = get_thread_hash(thread_ts)
     pdf_path = get_pdf_path_from_thread(thread_ts)
 
-    # ========== Case 1: PDF file upload ==========
+    # === Case 1: 파일 업로드 ===
     if subtype == "file_share":
         file_info = event["files"][0]
         if file_info["filetype"] != "pdf":
@@ -43,17 +51,34 @@ def handle_message(event, say, client, logger):
         with open(pdf_path, "wb") as f:
             f.write(response.content)
 
+        insert_metadata(thread_hash, {
+            "user_id": user_id,
+            "channel_id": channel_id,
+            "timestamp": thread_ts,
+            "filename": file_info.get("name", "unknown.pdf"),
+            "source": "uploaded"
+        })
+
         text = extract_text_from_pdf(pdf_path)
         post_summary_reply(client, channel_id, thread_ts, text)
         return
 
-    # ========== Case 2: Link to paper ==========
+    # === Case 2: 링크로부터 다운로드 ===
     success, source_link, filename = process_link_download(text, pdf_path)
     if success:
+        insert_metadata(thread_hash, {
+            "user_id": user_id,
+            "channel_id": channel_id,
+            "timestamp": thread_ts,
+            "filename": filename or os.path.basename(pdf_path),
+            "source": source_link
+        })
+
         text = extract_text_from_pdf(pdf_path)
         post_summary_reply(client, channel_id, thread_ts, text)
         return
 
+# === 요약 결과 전송 ===
 def post_summary_reply(client, channel, thread_ts, text):
     summary = summarize_text(text)
     user_ids = match_members(summary)
@@ -72,21 +97,56 @@ def post_summary_reply(client, channel, thread_ts, text):
             {
                 "type": "context",
                 "elements": [
-                    {"type": "mrkdwn", "text": f":bust_in_silhouette: 관련 있을 만한 사람: {user_mentions}"}
+                    {"type": "mrkdwn", "text": f":bust_in_silhouette: 관련 있을 만한 사람: {user_mentions if user_mentions else '없음. 수동으로 멘션해주세요.'}"}
                 ]
             }
         ]
     )
 
+# === Q&A 핸들러 (@autopaper 태그 시) ===
+@app.event("app_mention")
+def handle_qa(event, say, client, logger):
+    thread_ts = event.get("thread_ts")
+    channel_id = event["channel"]
+    user_question = event.get("text", "").strip()
+
+    if not thread_ts:
+        say("질문은 논문 요약 스레드에 reply로 달아주세요.")
+        return
+
+    thread_hash = get_thread_hash(thread_ts)
+    metadata = get_metadata(thread_hash)
+
+    if not metadata:
+        say("해당 논문 정보를 찾을 수 없습니다. 먼저 논문을 업로드하거나 링크를 보내주세요.")
+        return
+
+    pdf_path = get_pdf_path_from_thread(thread_ts)
+    if not os.path.exists(pdf_path):
+        # PDF가 없으면 다시 다운로드 시도
+        if metadata["source"].startswith("http"):
+            success, _, _ = process_link_download(metadata["source"], pdf_path)
+            if not success:
+                say("논문 PDF를 다시 가져올 수 없습니다.")
+                return
+        else:
+            say("PDF가 캐시되어 있지 않고, 다시 다운로드할 수 있는 링크도 없습니다.")
+            return
+
+    text = extract_text_from_pdf(pdf_path)
+    answer = answer_question(text, user_question)
+
+    say(
+        text=f"*Q: {user_question}*\n*A:* {answer}",
+        thread_ts=thread_ts
+    )
+
+# === 기타 이벤트 무시 ===
 @app.event("file_shared")
 def handle_file_shared_events(body, logger):
     logger.info("file_shared 이벤트는 message 이벤트에서 처리하므로 무시함")
 
-@flask_app.route("/cleanup", methods=["POST"])
-def trigger_cleanup():
-    run(["python", "cleanup_temp.py"])
-    return "Cleanup triggered", 200
-
+# === 이벤트 핸들러 ===
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
     if request.headers.get("Content-Type") == "application/json":
@@ -94,6 +154,12 @@ def slack_events():
         if "challenge" in payload:
             return payload["challenge"], 200
     return handler.handle(request)
+
+# === temp 정리 트리거 (선택사항) ===
+@flask_app.route("/cleanup", methods=["POST"])
+def trigger_cleanup():
+    run(["python", "cleanup_temp.py"])
+    return "Cleanup triggered", 200
 
 if __name__ == "__main__":
     flask_app.run(port=3000)

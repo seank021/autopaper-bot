@@ -7,6 +7,7 @@ SUPPORTED_SOURCES = {
         "pattern": r"(https?://(?:arxiv\.org/abs/|ar5iv\.org/html/)(\d+\.\d+))",
         "pdf_url": lambda arxiv_id: f"https://arxiv.org/pdf/{arxiv_id}.pdf"
     },
+    # TODO: Add more sources
 }
 
 def process_link_download(message_text, save_path):
