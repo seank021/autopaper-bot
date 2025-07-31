@@ -1,3 +1,3 @@
 INTEREST_DB = {
-    "U0410KJN2NR": ["style", "LSM", "reddit"], # 김세안 (dummy)
+    "U090X2M5P8B": ["style", "LSM", "reddit"], # 김세안 (dummy)
 }
