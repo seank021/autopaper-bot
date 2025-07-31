@@ -1,6 +1,6 @@
 from slack_bolt import App
 from slack_bolt.adapter.flask import SlackRequestHandler
-from flask import Flask, request, make_response
+from flask import Flask, request
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text
 from utils.interest_matcher import match_members
@@ -85,12 +85,10 @@ def handle_file_shared_events(body, logger):
 # 슬랙 이벤트 수신 엔드포인트
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
-    payload = request.get_json()
-
-    # 👉 challenge 응답 처리
-    if payload.get("type") == "url_verification":
-        return make_response(payload.get("challenge"), 200, {"content_type": "text/plain"})
-
+    if request.headers.get("Content-Type") == "application/json":
+        payload = request.get_json()
+        if "challenge" in payload:
+            return payload["challenge"], 200
     return handler.handle(request)
 
 if __name__ == "__main__":
