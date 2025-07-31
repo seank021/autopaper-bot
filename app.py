@@ -8,30 +8,26 @@ import os
 from dotenv import load_dotenv
 import requests
 
-# 환경 변수 불러오기
 load_dotenv()
 
 app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SIGNING_SECRET"))
 flask_app = Flask(__name__)
 handler = SlackRequestHandler(app)
 
-# 파일 업로드 메시지 처리
+# Slack message event handler
 @app.event("message")
 def handle_file_share(event, say, client, logger):
-    logger.info("📥 message 이벤트 감지됨!")
     logger.info(event)
 
     if event.get("subtype") != "file_share":
         return
 
-    logger.info("📎 file_share 이벤트 감지됨!")
-
     file_info = event["files"][0]
     if file_info["filetype"] != "pdf":
-        logger.info("❌ PDF 아님")
+        logger.info("PDF 형식이 아님")
         return
 
-    logger.info(f"📄 PDF 감지: {file_info['name']}")
+    logger.info(f"PDF 파일: {file_info['name']}")
 
     pdf_url = file_info["url_private_download"]
     headers = {"Authorization": f"Bearer {os.getenv('SLACK_BOT_TOKEN')}"}
@@ -44,19 +40,18 @@ def handle_file_share(event, say, client, logger):
     text = extract_text_from_pdf("temp/temp.pdf")
     summary = summarize_text(text)
 
-    # 사용자 태그 처리
+    # Tag related users
     user_ids = match_members(summary)
     user_mentions = ' '.join([f"<@{uid}>" for uid in user_ids])
+    logger.info(f"매칭된 유저: {user_mentions}")
 
-    logger.info(f"🔎 매칭된 유저: {user_mentions}")
-
-    # 메시지 작성
+    # Bot message
     summary_text = f"*[AutoPaper 요약]*\n{summary}"
 
     client.chat_postMessage(
         channel=event["channel"],
         thread_ts=event["ts"],
-        text=summary_text,  # fallback
+        text=summary_text,
         blocks=[
             {
                 "type": "section",
@@ -77,12 +72,12 @@ def handle_file_share(event, say, client, logger):
         ]
     )
 
-# file_shared 이벤트 무시
+# Ignore file_shared events since they are already handled by file_share
 @app.event("file_shared")
 def handle_file_shared_events(body, logger):
-    logger.info("📦 file_shared 이벤트 무시 (처리 안 함)")
+    logger.info("file_shared 이벤트는 따로 처리 안 함. (이미 file_share 이벤트에서 처리됨)")
 
-# 슬랙 이벤트 수신 엔드포인트
+# Slack event endpoint
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
     if request.headers.get("Content-Type") == "application/json":
