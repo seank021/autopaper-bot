@@ -5,9 +5,8 @@ from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text
 from utils.interest_matcher import match_members
 from utils.link_utils import process_link_download
-from utils.path_utils import get_pdf_path_from_thread, get_meta_path_from_thread
+from utils.path_utils import get_pdf_path_from_thread
 import os
-import json
 import requests
 from dotenv import load_dotenv
 from subprocess import run
@@ -27,9 +26,7 @@ def handle_message(event, say, client, logger):
     thread_ts = event["ts"]
     channel_id = event["channel"]
     user_id = event.get("user") or event.get("message", {}).get("user")
-
     pdf_path = get_pdf_path_from_thread(thread_ts)
-    meta_path = get_meta_path_from_thread(thread_ts)
 
     # ========== Case 1: PDF file upload ==========
     if subtype == "file_share":
@@ -46,15 +43,6 @@ def handle_message(event, say, client, logger):
         with open(pdf_path, "wb") as f:
             f.write(response.content)
 
-        with open(meta_path, "w") as f:
-            json.dump({
-                "user": user_id,
-                "channel": channel_id,
-                "timestamp": thread_ts,
-                "filename": file_info.get("name", "unknown.pdf"),
-                "source": "uploaded"
-            }, f, indent=2)
-
         text = extract_text_from_pdf(pdf_path)
         post_summary_reply(client, channel_id, thread_ts, text)
         return
@@ -62,15 +50,6 @@ def handle_message(event, say, client, logger):
     # ========== Case 2: Link to paper ==========
     success, source_link, filename = process_link_download(text, pdf_path)
     if success:
-        with open(meta_path, "w") as f:
-            json.dump({
-                "user": user_id,
-                "channel": channel_id,
-                "timestamp": thread_ts,
-                "filename": filename or os.path.basename(pdf_path),
-                "source": source_link
-            }, f, indent=2)
-
         text = extract_text_from_pdf(pdf_path)
         post_summary_reply(client, channel_id, thread_ts, text)
         return
