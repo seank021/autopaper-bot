@@ -16,7 +16,7 @@ def classify_relevance(summary: str, interest_desc: str) -> bool:
 
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4.1-nano",
             messages=[{"role": "user", "content": prompt}]
         )
         reply = response.choices[0].message.content.strip().lower()
@@ -28,12 +28,12 @@ def classify_relevance(summary: str, interest_desc: str) -> bool:
 def answer_question(context: str, question: str) -> str:
     prompt = (
         "You are a helpful academic assistant. Answer the question based on the paper below.\n\n"
-        f"Paper:\n{context[:3000]}\n\n" # truncation to fit token limits
+        f"Paper:\n{context}\n\n"
         f"Question:\n{question}"
     )
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4.1-nano",
             messages=[
                 {"role": "user", "content": prompt}
             ]
