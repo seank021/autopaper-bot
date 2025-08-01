@@ -97,7 +97,7 @@ def post_summary_reply(client, channel, thread_ts, text):
             {
                 "type": "context",
                 "elements": [
-                    {"type": "mrkdwn", "text": f":bust_in_silhouette: 관련 있을 만한 사람: {user_mentions if user_mentions else '없음. 수동으로 멘션해주세요.'}"}
+                    {"type": "mrkdwn", "text": f":bust_in_silhouette: 관련 있을 만한 사람: {user_mentions if user_mentions else ':x: 수동으로 멘션해주세요.'}"}
                 ]
             }
         ]
