@@ -1,0 +1,38 @@
+[
+    {
+        "paper": "https://arxiv.org/abs/2503.23315",
+        "matched_users": ["kihoon"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2506.23678",
+        "matched_users": ["U8JLRRXPB"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2409.08937",
+        "matched_users": ["U03KJ9NJ1FU"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2507.01921",
+        "matched_users": ["U8JLRRXPB"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2409.12538",
+        "matched_users": ["hyungyu.shin"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2507.13524",
+        "matched_users": ["hyunwookim"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2507.07935",
+        "matched_users": ["U1LB1DXJS"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2507.22358",
+        "matched_users": ["kihoon"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2508.00723",
+        "matched_users": ["U03KJ9NJ1FU"]
+    }
+]
