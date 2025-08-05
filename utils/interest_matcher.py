@@ -5,8 +5,9 @@ def match_members(summary_text):
     matched_user_ids = []
 
     for user_id, profile in INTEREST_DB.items():
-        # keywords = profile.get("keywords", [])
+        keywords = ", ".join(profile.get("keywords", []))
         interest_text = profile.get("interests", "")
+        curr_prjs = profile.get("current_projects", "")
 
         # === Step 1: Keyword match ===
         # keyword_match = any(
@@ -14,7 +15,7 @@ def match_members(summary_text):
         # )
 
         # === Step 2: LLM-based semantic match ===
-        llm_match = classify_relevance(summary_text, interest_text)
+        llm_match = classify_relevance(summary_text, keywords, interest_text, curr_prjs)
 
         # === Hybrid Match: Either is True ===
         if llm_match:

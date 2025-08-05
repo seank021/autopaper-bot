@@ -1,7 +1,127 @@
 INTEREST_DB = {
     "U090X2M5P8B": { # Sean
-        "keywords": ["education", "visualization", "social"],
+        "keywords": ["education", "visualization", "social", "HCI"],
         "interests": "I'm interested in education area to improve the learning experience. I also like to work on visualization and social-problem-solving projects.",
         "current_projects": "I'm working on graph based knowledge tracing, which is a project that aims to improve the learning experience by using graph-based methods to trace knowledge acquisition.",
+    },
+    "U08DG6LRQ3V": { # Jenny
+        "keywords": ["LLM reasoning", "llm hallucination", "llm confidence", "llm/AI persona", "agentic system", "ai agent assistant", "llm efficient reasoning", "llm token level confidence"],
+        "interests": "I'm interested in LLM reasoning, hallucination, and confidence. Also focused on agentic systems and AI personas.",
+        "current_projects": "prj-collab-agent, efficient LLM reasoning, LLM confidence and hallucination",
+    },
+    "U3M5HJ7MX": { # Eunyoung
+        "keywords": ["social", "education", "civic", "policy", "learning", "discussion"],
+        "interests": "Social computing, interface design for complex information delivery, and how people discuss, interpret, and interact with information.",
+        "current_projects": "I'm working on a project designing AI-integrate support for public to understand diverse policy impacts. Also working on a project aiming to improve the learning experience by using graph-based methods to trace knowledge acquisition.",
+    },
+    "U083D8Y0YJE": { # Gosu
+        "keywords": ["AI Agent", "job", "psychology", "persona"],
+        "interests": "How AI transforms professionality and occupations in our lives.",
+        "current_projects": "Just-in-time code reviewer, an AI pair programming tool.",
+    },
+    "U8JLRRXPB": { # Taesoo
+        "keywords": ["LLM", "RL", "Evaluation", "Reasoning"],
+        "interests": "I’m interested in designing interaction mechanisms to help users better use LLMs and also to train LLM in a way that they are more interactive for users.",
+        "current_projects": "I’m working on a project where we train reasoning LLMs to produce intermediate drafts during their reasoning process so that users can verify their work and intervene where necessary.",
+    },
+    "U07PC9NTTNK": { # Seungju
+        "keywords": ["education", "learning", "accessibility", "overreliance", "cognitive", "emotion"],
+        "interests": "I'm interested in how people learn with GenAI and how learning community can be developed with GenAI",
+        "current_projects": "Developing AI tutor using MMLM, extracting knowledge using LLM, evaluating complexity of video, accessible video-based learning, optimal interface for learning.",
+    },
+    "U090X2ST9NF": { # Daho
+        "keywords": ["LLM", "education", "simulation", "evaluation", "economy", "productivity"],
+        "interests": "I'm interested in how people can interact with AI related system and its impact on education, economy, productivity and decision making process.",
+        "current_projects": "Personalized AI Tutor with student simulator, feedback evaluation, and knowledge tracing.",
+    },
+    "UAP5VEP2R": { # Yoonseo
+        "keywords": ["agent", "LLM", "decision making support", "user centered design", "qualitative methods", "UX", "Human-AI collaboration", "Responsible AI", "design methods", "social computing", "crowdsourcing", "stakeholder"],
+        "interests": "I’m interested in simulating user representations for designers/experts to successfully understand and target the right user. I’m also interested in how to leverage technologies for social goods.",
+        "current_projects": "Persona-based UX process support, AI aversion vs. human favoritism",
+    },
+    "U025KUM8NSY": { # Junho
+        "keywords": ["LLM evaluation", "Human-centered NLP", "Fairness", "AI application"],
+        "interests": "My research interest lies in human-centered evaluation of large language models (LLMs). While current LLM evaluations often rely on single benchmark scores, these metrics rarely reflect how people actually use language models in real-world settings. I aim to develop evaluation methods that are grounded in human goals, expectations, and tasks, moving beyond static benchmarks to more context-sensitive, user-centered assessments.",
+        "current_projects": "Evaluating cultural knowledge of LLMs in a long-form generation format, closer to how people use in real life scenarios.",
+    },
+    "U1LB1DXJS": { # Juho
+        "keywords": ["agents", "skill", "productivity", "future of work"],
+        "interests": "How AI can successfully be deployed in diverse real-world settings like education, work, decision making, discussion, creative tasks, etc.",
+        "current_projects": "Understanding how software engineers’ productivity and skill get affected by use of AI coding assistants.",
+    },
+    "U05BC4D4STU": { # Hyewon
+        "keywords": ["creativity", "interface", "agent", "llm", "design"],
+        "interests": "I’m interested in any HCI papers solving problems on design domain and the papers building a novel system for Human-AI collaboration.",
+        "current_projects": "I’m building a Human-AI co-creation tool for UI design in shared design workspace.",
+    },
+    "U06AJGGHZ5L": { # Daeheon
+        "keywords": ["design", "VLM", "multimodal", "generative", "productivity", "labor", "creativity"],
+        "interests": "AI-based design, foundation models, and societal impacts of AI.",
+        "current_projects": "UI generation",
+    },
+    "U03KJ9NJ1FU": { # Yeon Su
+        "keywords": ["reliance", "reliability", "evaluation", "human cognition", "XAI", "HAI"],
+        "interests": "I’m interested in how humans perceive and cognitively respond to AI systems. Specifically, I want to explore how different factors—such as explanations (XAI), interaction design (HAI), and system transparency—affect users’ trust, mental models, and patterns of reliance on AI.",
+        "current_projects": "I’m currently working on the project to understand why AI reliance is caused, and prevent any overrelianceI’m currently working on a project that investigates the underlying cognitive and interactional causes of AI reliance and overreliance. The goal is to better understand when and why humans place too much trust in AI systems, and to design strategies or interventions to prevent harmful overreliance.",
+    },
+    "U07B3LG8M5E": { # Hyehyun
+        "keywords": ["Accessibility", "Senior", "Older Adults", "Autonomy", "Agent"],
+        "interests": "I am fundamentally interested in helping people become proficient with technology. To achieve this, I believe that accessibility and learning in technology are crucial. Therefore, I aim to research in the fields of Accessibility, Human-AI interaction, and Computer-Supported Collaborative Learning.",
+        "current_projects": "I’m currently working on a project about designing interactions for older adults with an agent. Also, the other project is about discovering challenges of border line intelligence people in video based learning situation and suggesting design implications for video interface.",
+    },
+    "U03492H28Q3": { # Yoonsu
+        "keywords": ["HAI", "Human LLM interaction", "Proactive Support", "AI in education", "AI Alignment", "User-centered interaction", "AI Agent"],
+        "interests": "human-ai interaction, human-llm interaction, human-ai collaboration, human-centered ai, understanding difficulties users face when interaction with ai, enabling people to effectively use and collaborate with AI to amplify their abilities",
+        "current_projects": "(1) developing an interactive system to support user’s intent communication with LLM, (2) developing an interactive system to support proactive support based on users’ contextual information they shared to the system with their inner thoughts on them, (2) Utilizing LLM to diagnosis student’s problem-solving skills through their problem-solving process",
+    },
+    "U090X2UUAN7": { # Shujun
+        "keywords": ["video", "learning", "llm", "design methods"],
+        "interests": "I am interested in the video assisted learning and some design methods on that. Also, I’d like to learn some paper on healthcare.",
+        "current_projects": "I am working on tic detection and CBIT platform project, it helps identify ic actions in videos and provide personal CBIT approaches to this users.",
+    },
+    "U079D5P6P3M": { # Heechan
+        "keywords": ["NLP", "LLM evaluation", "Qualitative research", "Explainable AI", "Dataset Evaluation", "Simulation", "Software engineering with Agent", "Human-AI Collaboration"],
+        "interests": "Training and evaluating AI systems to align with human intent and usage patterns.",
+        "current_projects": "(1) Visualization of the evaluation of LLM response, (2) Collect long-term group collaborative conversation data from wild, (3) Using LLM to expand user’s interpretive space in the context of qualitative research.",
+    },
+    "U090X2QH2QK": { # Minbeom
+        "keywords": ["HAI", "HCI", "video", "tutorial", "agent", "learning"],
+        "interests": "Human-AI collaboration for creative content creation.",
+        "current_projects": "prj-starlab: How-To video structuring/augmentation/analysis",
+    },
+    "U090X2ZDC91": { # Hayeon
+        "keywords": ["education", "XAI", "accessibility", "UI/UX"],
+        "interests": "My interest is in reducing gap for digital access using technology. My main domain is in education but also interested in disabled groups and seniors.",
+        "current_projects": "AI system that diagnosis student’s math problem solving skills. Based on the math problem,, AI system auto generates sub questions in order to evaluate student’s math problem solving skills",
+    },
+    "U090X2ZKHQB": { # Yoshee
+        "keywords": ["learning", "HAI", "agentic AI", "accessibility", "education", "multimodal", "AI in education", "HCI"],
+        "interests": "human-AI collaboration in educational applications for developing tools and datasets for instructors or educators and students",
+        "current_projects": "Video complexity evaluation and simplification for accessibility",
+    },
+    "U06FXPDH4TF": { # Jaesang
+        "keywords": ["multimodal", "AI alignment", "multi-turn", "interaction", "post-training", "test-time scaling", "reinforcement learning", "reasoning"],
+        "interests": "Human-centered and human-aligned AI development.",
+        "current_projects": "(1) step-by-step image generation, (2) agentic support in human-ai collaborative settings, (3) discovering possible room for human interaction/intervention during LLM multi-step reasoning process",
+    },
+    "U086M1LK65R": { # Nadia
+        "keywords": ["information processing", "agent", "LLM response quality", "content quality"],
+        "interests": "I'm interested in helping users in processing informations and reduce cognitive demand while still maintaining human innate ability to read and understand information. currently thinking of: 1) proactive agent that guides information processing, or 2) how to differentiate and choose the good quality content to digest among many other content.",
+        "current_projects": "I'm working on measuring user reliance on AI through measurable metrics such as user confidence and AI trust. in the future work, we are hoping to make an intervention method to protect human cognition skills while interacting with AI.",
+    },
+    "UUQ287SEQ": { # Yoonjoo
+        "keywords": ["AI alignment", "human augmentation", "evaluation", "agent"],
+        "interests": "Aligning AI systems with human cognitive processes to augment human’s cognitive abilities by interacting with AI",
+        "current_projects": "Group-based alignment, evaluating LLM's capability of knowledge transfer",
+    },
+    "U01HB3S0UM8": { # Bekzat
+        "keywords": ["video", "HAI", "planning", "agents", "learning", "creativity", "CST"],
+        "interests": "Human-AI interaction and collaboration, especially in creativity and learning domains.",
+        "current_projects": "prj-starlab: Tutorial video analysis, augmentation, synthesis",
+    },
+    "U090X2ZGD0B": { # Chanbin
+        "keywords": ["Human-AI Interaction", "Context-aware", "Agent", "Interactive Systems", "Human-AI Grounding"],
+        "interests": "Helping AI better understand humans to provide proactive support.",
+        "current_projects": "Enhancing user understanding of AI through interactive systems that can lead to proactive support.",
     },
 }
