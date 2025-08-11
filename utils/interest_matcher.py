@@ -42,7 +42,7 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
 
 
 # Match top N members based on summary text
-def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False):
+def match_top_n_members(summary_text, top_n=1, weights=None, return_similarities=False):
     if weights is None:
         weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
 

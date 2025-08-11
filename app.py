@@ -83,7 +83,7 @@ def post_summary_reply(client, channel, thread_ts, text):
     summary = summarize_text(text)
     user_ids = match_members(summary)
     user_mentions = ' '.join([f"<@{uid}>" for uid in user_ids])
-    summary_text = f"*[AutoPaper 요약]*\n{summary}"
+    summary_text = f"*[AutoPaper Summary]*\n{summary}"
 
     client.chat_postMessage(
         channel=channel,
@@ -97,7 +97,7 @@ def post_summary_reply(client, channel, thread_ts, text):
             {
                 "type": "context",
                 "elements": [
-                    {"type": "mrkdwn", "text": f":bust_in_silhouette: 관련 있을 만한 사람: {user_mentions if user_mentions else ':x: 수동으로 멘션해주세요.'}"}
+                    {"type": "mrkdwn", "text": f":bust_in_silhouette: Related User: {user_mentions if user_mentions else ':x: Please manually mention users in the thread.'}"}
                 ]
             }
         ]

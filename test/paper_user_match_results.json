@@ -1,326 +1,110 @@
 [
     {
         "paper": "https://arxiv.org/abs/2503.23315",
-        "summary": "The paper introduces AI \"Design Agents\" to streamline car design by automating tasks like styling and aerodynamic simulations with AI models, significantly speeding up design processes.",
+        "summary": "This paper presents an AI framework with agents that automate and enhance car design by rapidly handling aesthetic and aerodynamic tasks, thus empowering designers and engineers to innovate efficiently.",
         "matched_users": [
-            "U1LB1DXJS",
-            "U05BC4D4STU",
-            "U090X2ZGD0B"
+            "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.4757,
-            "U090X2UUAN7": 0.2712,
-            "U3M5HJ7MX": 0.3399,
-            "U090X2M5P8B": 0.166,
-            "U090X2QH2QK": 0.3643,
-            "U090X2ZGD0B": 0.4688,
-            "U079D5P6P3M": 0.289,
-            "U8JLRRXPB": 0.257,
-            "U090X2ST9NF": 0.3679,
-            "U025KUM8NSY": 0.1758,
-            "U06FXPDH4TF": 0.4084,
-            "U08DG6LRQ3V": 0.2505,
-            "U1LB1DXJS": 0.4904,
-            "U07PC9NTTNK": 0.3244,
-            "U06AJGGHZ5L": 0.4292,
-            "U07B3LG8M5E": 0.3163,
-            "U01HB3S0UM8": 0.3858,
-            "U083D8Y0YJE": 0.44,
-            "U090X2ZKHQB": 0.3379,
-            "U090X2ZDC91": 0.2444,
-            "U03492H28Q3": 0.3446,
-            "U03KJ9NJ1FU": 0.4055,
-            "UUQ287SEQ": 0.3171,
-            "UAP5VEP2R": 0.3458,
-            "U086M1LK65R": 0.358
+            "U090X2M5P8B": 0.2309,
+            "U090X2ZKHQB": 0.3846,
+            "U086M1LK65R": 0.3976
         }
     },
     {
         "paper": "https://arxiv.org/abs/2506.23678",
-        "summary": "The paper presents \"Interactive Reasoning\", a user interface that visualizes large language model (LLM) reasoning as an editable hierarchy, showcasing how users can interact with and adjust reasoning processes to personalize responses.",
+        "summary": "The paper \"Interactive Reasoning: Visualizing and Controlling Chain-of-Thought Reasoning in Large Language Models\" explores a novel interface, Hippo, enabling users to engage with AI's reasoning process through interactive tree visualizations. By intervening and editing reasoning steps, users can steer AI decisions, enhancing personalization and understanding. The research indicates this approach improves users' control, awareness, and sense-making, offering a new paradigm for user interaction with AI models.",
         "matched_users": [
-            "U8JLRRXPB",
-            "U025KUM8NSY",
-            "U03492H28Q3"
+            "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.3703,
-            "U090X2UUAN7": 0.2907,
-            "U3M5HJ7MX": 0.3683,
-            "U090X2M5P8B": 0.3382,
-            "U090X2QH2QK": 0.3125,
-            "U090X2ZGD0B": 0.4262,
-            "U079D5P6P3M": 0.4253,
-            "U8JLRRXPB": 0.5718,
-            "U090X2ST9NF": 0.3581,
-            "U025KUM8NSY": 0.4674,
-            "U06FXPDH4TF": 0.4437,
-            "U08DG6LRQ3V": 0.4399,
-            "U1LB1DXJS": 0.3035,
-            "U07PC9NTTNK": 0.4091,
-            "U06AJGGHZ5L": 0.3207,
-            "U07B3LG8M5E": 0.3517,
-            "U01HB3S0UM8": 0.3415,
-            "U083D8Y0YJE": 0.2721,
-            "U090X2ZKHQB": 0.3211,
-            "U090X2ZDC91": 0.256,
-            "U03492H28Q3": 0.4626,
-            "U03KJ9NJ1FU": 0.3691,
-            "UUQ287SEQ": 0.3875,
-            "UAP5VEP2R": 0.3161,
-            "U086M1LK65R": 0.3776
+            "U090X2M5P8B": 0.367,
+            "U090X2ZKHQB": 0.3779,
+            "U086M1LK65R": 0.4366
         }
     },
     {
         "paper": "https://arxiv.org/abs/2409.08937",
-        "summary": "The paper explores how AI \"hallucinations\" impact data quality in human-AI collaboration, suggesting that cognitive forcing functions can influence reliance but don't always improve output quality.",
+        "summary": "The paper explores challenges in collaborating with AI for generating reliable content, focusing on AI hallucinations and Cognitive Forcing Functions. Hallucinations harm data quality, while forcing functions affect user reliance on AI.",
         "matched_users": [
-            "U03KJ9NJ1FU",
-            "U1LB1DXJS",
-            "U090X2ZGD0B"
+            "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.4553,
-            "U090X2UUAN7": 0.2703,
-            "U3M5HJ7MX": 0.3493,
-            "U090X2M5P8B": 0.2465,
-            "U090X2QH2QK": 0.3732,
-            "U090X2ZGD0B": 0.489,
-            "U079D5P6P3M": 0.4017,
-            "U8JLRRXPB": 0.3087,
-            "U090X2ST9NF": 0.3768,
-            "U025KUM8NSY": 0.312,
-            "U06FXPDH4TF": 0.4449,
-            "U08DG6LRQ3V": 0.4399,
-            "U1LB1DXJS": 0.494,
-            "U07PC9NTTNK": 0.351,
-            "U06AJGGHZ5L": 0.3479,
-            "U07B3LG8M5E": 0.3625,
-            "U01HB3S0UM8": 0.4078,
-            "U083D8Y0YJE": 0.4429,
-            "U090X2ZKHQB": 0.3704,
-            "U090X2ZDC91": 0.2426,
-            "U03492H28Q3": 0.4234,
-            "U03KJ9NJ1FU": 0.53,
-            "UUQ287SEQ": 0.4052,
-            "UAP5VEP2R": 0.3567,
-            "U086M1LK65R": 0.4779
+            "U090X2M5P8B": 0.2395,
+            "U090X2ZKHQB": 0.3663,
+            "U086M1LK65R": 0.4871
         }
     },
     {
         "paper": "https://arxiv.org/abs/2507.01921",
-        "summary": "The paper explores selecting diverse, challenging reasoning examples from models to enhance smaller models' reasoning skills. Using mixed reasoning traces boosts efficiency and accuracy across tasks.",
+        "summary": "The paper presents NaturalThoughts, a method that improves reasoning tasks by selecting challenging reasoning traces from a strong teacher model, outperforming other datasets through diverse, difficult examples and efficient learning.",
         "matched_users": [
-            "U8JLRRXPB",
-            "U1LB1DXJS",
-            "U06FXPDH4TF"
+            "U090X2M5P8B"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.2708,
-            "U090X2UUAN7": 0.2322,
-            "U3M5HJ7MX": 0.278,
-            "U090X2M5P8B": 0.2981,
-            "U090X2QH2QK": 0.2311,
-            "U090X2ZGD0B": 0.335,
-            "U079D5P6P3M": 0.2964,
-            "U8JLRRXPB": 0.4262,
-            "U090X2ST9NF": 0.2877,
-            "U025KUM8NSY": 0.3166,
-            "U06FXPDH4TF": 0.3474,
-            "U08DG6LRQ3V": 0.3413,
-            "U1LB1DXJS": 0.3756,
-            "U07PC9NTTNK": 0.3175,
-            "U06AJGGHZ5L": 0.2229,
-            "U07B3LG8M5E": 0.2781,
-            "U01HB3S0UM8": 0.2664,
-            "U083D8Y0YJE": 0.2238,
-            "U090X2ZKHQB": 0.2921,
-            "U090X2ZDC91": 0.2556,
-            "U03492H28Q3": 0.2881,
-            "U03KJ9NJ1FU": 0.3262,
-            "UUQ287SEQ": 0.3012,
-            "UAP5VEP2R": 0.2523,
-            "U086M1LK65R": 0.3264
+            "U090X2M5P8B": 0.3675,
+            "U090X2ZKHQB": 0.322,
+            "U086M1LK65R": 0.3581
         }
     },
     {
         "paper": "https://arxiv.org/abs/2409.12538",
-        "summary": "**Summary of PersonaFlow Paper:**\n\nPersonaFlow uses AI to simulate diverse expert perspectives, enhancing research idea generation by providing relevant feedback and literature insights without increasing cognitive load, fostering critical thinking.",
+        "summary": "The paper introduces \"PersonaFlow,\" a system using AI-simulated experts to enhance interdisciplinary research ideation, promoting creativity, relevance, and critical thinking without increasing cognitive load through customizable personas.",
         "matched_users": [
-            "U090X2ZGD0B",
-            "U1LB1DXJS",
-            "U090X2ST9NF"
+            "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.4169,
-            "U090X2UUAN7": 0.3137,
-            "U3M5HJ7MX": 0.3729,
-            "U090X2M5P8B": 0.3215,
-            "U090X2QH2QK": 0.3472,
-            "U090X2ZGD0B": 0.4281,
-            "U079D5P6P3M": 0.3518,
-            "U8JLRRXPB": 0.3189,
-            "U090X2ST9NF": 0.4246,
-            "U025KUM8NSY": 0.3349,
-            "U06FXPDH4TF": 0.4055,
-            "U08DG6LRQ3V": 0.3735,
-            "U1LB1DXJS": 0.4276,
-            "U07PC9NTTNK": 0.3574,
-            "U06AJGGHZ5L": 0.324,
-            "U07B3LG8M5E": 0.37,
-            "U01HB3S0UM8": 0.3765,
-            "U083D8Y0YJE": 0.3948,
-            "U090X2ZKHQB": 0.3218,
-            "U090X2ZDC91": 0.3074,
-            "U03492H28Q3": 0.3881,
-            "U03KJ9NJ1FU": 0.4178,
-            "UUQ287SEQ": 0.3602,
-            "UAP5VEP2R": 0.4218,
-            "U086M1LK65R": 0.4091
+            "U090X2M5P8B": 0.3073,
+            "U090X2ZKHQB": 0.3344,
+            "U086M1LK65R": 0.4146
         }
     },
     {
         "paper": "https://arxiv.org/abs/2507.13524",
-        "summary": "This study explores how people choose between AI and human partners. When AI identities were hidden, people didn't prefer AI, attributing AI behavior to humans. Transparency initially biased against AI, but eventually, people learned to prefer AI, highlighting the complex dynamics in hybrid societies.",
+        "summary": "This paper reveals that when choosing partners, humans often fail to distinguish AI from humans, initially preferring humans but gradually favoring reliable AI in transparent conditions, reshaping interaction dynamics.",
         "matched_users": [
-            "U03KJ9NJ1FU",
-            "UAP5VEP2R",
-            "U090X2ZGD0B"
+            "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.4187,
-            "U090X2UUAN7": 0.2268,
-            "U3M5HJ7MX": 0.3519,
-            "U090X2M5P8B": 0.1928,
-            "U090X2QH2QK": 0.3254,
-            "U090X2ZGD0B": 0.4898,
-            "U079D5P6P3M": 0.3594,
-            "U8JLRRXPB": 0.2268,
-            "U090X2ST9NF": 0.4039,
-            "U025KUM8NSY": 0.2548,
-            "U06FXPDH4TF": 0.4495,
-            "U08DG6LRQ3V": 0.3283,
-            "U1LB1DXJS": 0.4651,
-            "U07PC9NTTNK": 0.395,
-            "U06AJGGHZ5L": 0.3569,
-            "U07B3LG8M5E": 0.3842,
-            "U01HB3S0UM8": 0.3757,
-            "U083D8Y0YJE": 0.4125,
-            "U090X2ZKHQB": 0.3588,
-            "U090X2ZDC91": 0.2396,
-            "U03492H28Q3": 0.4218,
-            "U03KJ9NJ1FU": 0.5681,
-            "UUQ287SEQ": 0.3904,
-            "UAP5VEP2R": 0.4913,
-            "U086M1LK65R": 0.4319
+            "U090X2M5P8B": 0.1615,
+            "U090X2ZKHQB": 0.3424,
+            "U086M1LK65R": 0.3945
         }
     },
     {
         "paper": "https://arxiv.org/abs/2507.07935",
-        "summary": "This study analyzes 200,000 Bing Copilot conversations to assess AI's role in various work tasks. It estimates the applicability of AI across occupations, highlighting its impact on knowledge and communication-focused jobs.",
+        "summary": "The paper analyzes 200k user\u2013AI conversations to assess generative AI\u2019s occupational impact. Generative AI mainly aids information gathering, writing, and communication-related tasks, especially for knowledge work.",
         "matched_users": [
-            "U1LB1DXJS",
-            "U03KJ9NJ1FU",
-            "U083D8Y0YJE"
+            "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.3526,
-            "U090X2UUAN7": 0.2951,
-            "U3M5HJ7MX": 0.3381,
-            "U090X2M5P8B": 0.2417,
-            "U090X2QH2QK": 0.2994,
-            "U090X2ZGD0B": 0.4536,
-            "U079D5P6P3M": 0.3688,
-            "U8JLRRXPB": 0.2225,
-            "U090X2ST9NF": 0.4442,
-            "U025KUM8NSY": 0.2995,
-            "U06FXPDH4TF": 0.3643,
-            "U08DG6LRQ3V": 0.2955,
-            "U1LB1DXJS": 0.5208,
-            "U07PC9NTTNK": 0.3584,
-            "U06AJGGHZ5L": 0.2986,
-            "U07B3LG8M5E": 0.353,
-            "U01HB3S0UM8": 0.3445,
-            "U083D8Y0YJE": 0.4551,
-            "U090X2ZKHQB": 0.3476,
-            "U090X2ZDC91": 0.2519,
-            "U03492H28Q3": 0.3972,
-            "U03KJ9NJ1FU": 0.4699,
-            "UUQ287SEQ": 0.3552,
-            "UAP5VEP2R": 0.3158,
-            "U086M1LK65R": 0.4312
+            "U090X2M5P8B": 0.2728,
+            "U090X2ZKHQB": 0.3405,
+            "U086M1LK65R": 0.4405
         }
     },
     {
         "paper": "https://arxiv.org/abs/2507.22358",
-        "summary": "Magentic-UI is a research prototype for studying human-in-the-loop AI systems, combining human insight with AI to perform complex tasks safely and efficiently while ensuring user control.",
+        "summary": "The paper introduces Magentic-UI, an open-source, human-in-the-loop agentic system to enhance AI-human collaboration by integrating human oversight in AI tasks, thereby improving safety, security, and efficiency.",
         "matched_users": [
-            "U086M1LK65R",
-            "U05BC4D4STU",
-            "U090X2ZGD0B"
+            "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.4678,
-            "U090X2UUAN7": 0.3097,
-            "U3M5HJ7MX": 0.3772,
-            "U090X2M5P8B": 0.3155,
-            "U090X2QH2QK": 0.3301,
-            "U090X2ZGD0B": 0.4676,
-            "U079D5P6P3M": 0.3545,
-            "U8JLRRXPB": 0.3583,
-            "U090X2ST9NF": 0.4027,
-            "U025KUM8NSY": 0.3032,
-            "U06FXPDH4TF": 0.4608,
-            "U08DG6LRQ3V": 0.3538,
-            "U1LB1DXJS": 0.3637,
-            "U07PC9NTTNK": 0.4106,
-            "U06AJGGHZ5L": 0.4025,
-            "U07B3LG8M5E": 0.4202,
-            "U01HB3S0UM8": 0.373,
-            "U083D8Y0YJE": 0.3486,
-            "U090X2ZKHQB": 0.3723,
-            "U090X2ZDC91": 0.2895,
-            "U03492H28Q3": 0.4256,
-            "U03KJ9NJ1FU": 0.4504,
-            "UUQ287SEQ": 0.335,
-            "UAP5VEP2R": 0.4239,
-            "U086M1LK65R": 0.4729
+            "U090X2M5P8B": 0.2685,
+            "U090X2ZKHQB": 0.395,
+            "U086M1LK65R": 0.4674
         }
     },
     {
         "paper": "https://arxiv.org/abs/2508.00723",
-        "summary": "The paper explores why decision-makers in various fields, like medicine and law, adopt or avoid AI tools, identifying factors like individual background, AI perception, and consequences.",
+        "summary": "The paper explores why decision-makers adopt or avoid AI. Interviews across four fields (medicine, law, journalism, public sector) identified key adoption influences: user background, AI perceptions, personal/professional consequences, and stakeholder impacts.",
         "matched_users": [
-            "U03KJ9NJ1FU",
-            "U1LB1DXJS",
             "U086M1LK65R"
         ],
         "similarities": {
-            "U05BC4D4STU": 0.4157,
-            "U090X2UUAN7": 0.3193,
-            "U3M5HJ7MX": 0.3616,
-            "U090X2M5P8B": 0.206,
-            "U090X2QH2QK": 0.2603,
-            "U090X2ZGD0B": 0.4267,
-            "U079D5P6P3M": 0.3572,
-            "U8JLRRXPB": 0.27,
-            "U090X2ST9NF": 0.4032,
-            "U025KUM8NSY": 0.2866,
-            "U06FXPDH4TF": 0.4126,
-            "U08DG6LRQ3V": 0.35,
-            "U1LB1DXJS": 0.5127,
-            "U07PC9NTTNK": 0.3546,
-            "U06AJGGHZ5L": 0.3658,
-            "U07B3LG8M5E": 0.375,
-            "U01HB3S0UM8": 0.3175,
-            "U083D8Y0YJE": 0.3923,
-            "U090X2ZKHQB": 0.3267,
-            "U090X2ZDC91": 0.278,
-            "U03492H28Q3": 0.3978,
-            "U03KJ9NJ1FU": 0.5687,
-            "UUQ287SEQ": 0.3316,
-            "UAP5VEP2R": 0.4007,
-            "U086M1LK65R": 0.4358
+            "U090X2M5P8B": 0.1821,
+            "U090X2ZKHQB": 0.3169,
+            "U086M1LK65R": 0.4455
         }
     }
 ]
