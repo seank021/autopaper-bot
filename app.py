@@ -9,7 +9,7 @@ from subprocess import run
 # === Custom utility modules ===
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text
-from utils.interest_matcher import match_members
+from utils.interest_matcher import match_top_n_members
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
 from utils.supabase_db import insert_metadata, get_metadata
@@ -81,8 +81,8 @@ def handle_message(event, say, client, logger):
 # === 요약 결과 전송 ===
 def post_summary_reply(client, channel, thread_ts, text):
     summary = summarize_text(text)
-    user_ids = match_members(summary)
-    user_mentions = ' '.join([f"<@{uid}>" for uid in user_ids])
+    matched_users, sim_dict = match_top_n_members(summary, return_similarities=True)
+    user_mentions = ' '.join([f"<@{uid}>" for uid in matched_users])
     summary_text = f"*[AutoPaper Summary]*\n{summary}"
 
     client.chat_postMessage(
