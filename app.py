@@ -97,7 +97,7 @@ def post_summary_reply(client, channel, thread_ts, text):
             {
                 "type": "context",
                 "elements": [
-                    {"type": "mrkdwn", "text": f":bust_in_silhouette: Related User: {user_mentions if user_mentions else ':x: Please manually mention users in the thread.'}"}
+                    {"type": "mrkdwn", "text": f":bust_in_silhouette: May be relevant to: {user_mentions if user_mentions else ':x: Please manually mention users in the thread.'}"}
                 ]
             }
         ]
@@ -111,14 +111,14 @@ def handle_qa(event, say, client, logger):
     user_question = event.get("text", "").strip()
 
     if not thread_ts:
-        say("질문은 논문 요약 스레드에 reply로 달아주세요.")
+        say("Please reply to a specific thread to ask a question.")
         return
 
     thread_hash = get_thread_hash(thread_ts)
     metadata = get_metadata(thread_hash)
 
     if not metadata:
-        say("해당 논문 정보를 찾을 수 없습니다. 먼저 논문을 업로드하거나 링크를 보내주세요.")
+        say("Cannot find metadata for this thread. Please ensure the thread has a valid PDF or link.")
         return
 
     pdf_path = get_pdf_path_from_thread(thread_ts)
@@ -127,10 +127,10 @@ def handle_qa(event, say, client, logger):
         if metadata["source"].startswith("http"):
             success, _, _ = process_link_download(metadata["source"], pdf_path)
             if not success:
-                say("논문 PDF를 다시 가져올 수 없습니다.")
+                say("I cannot bring the PDF right now. Please ensure the link is valid or upload the PDF directly.")
                 return
         else:
-            say("PDF가 캐시되어 있지 않고, 다시 다운로드할 수 있는 링크도 없습니다.")
+            say("PDF file not found. Please ensure it was uploaded or linked correctly.")
             return
 
     text = extract_text_from_pdf(pdf_path)
