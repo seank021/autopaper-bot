@@ -14,6 +14,21 @@ INTEREST_DB = {
         "interests": "human-AI collaboration in educational applications for developing tools and datasets for instructors or educators and students",
         "current_projects": "Video complexity evaluation and simplification for accessibility",
     },
+    "U090X2ST9NF": { # Daho
+        "keywords": ["LLM", "education", "simulation", "evaluation", "economy", "productivity"],
+        "interests": "I'm interested in how people can interact with AI related system and its impact on education, economy, productivity and decision making process.",
+        "current_projects": "Personalized AI Tutor with student simulator, feedback evaluation, and knowledge tracing.",
+    },
+    "U05BC4D4STU": { # Hyewon
+        "keywords": ["creativity", "interface", "agent", "llm", "design"],
+        "interests": "I’m interested in any HCI papers solving problems on design domain and the papers building a novel system for Human-AI collaboration.",
+        "current_projects": "I’m building a Human-AI co-creation tool for UI design in shared design workspace.",
+    },
+    "U078YHXKTU7": { # Eunhye
+        "keywords": ["sensemaking", "decision making", "search", "adaptive systems"],
+        "interests": "I'm interested in creating systems that support sensemaking in information-heavy domains. I'm also interested in adaptive systems, like adaptive interfaces, and personalized chat systems.",
+        "current_projects": "I'm working on creating an adaptive interface system for sensemaking tasks like decision-making in e-commerce or literature."
+    },
     # "U08DG6LRQ3V": { # Jenny
     #     "keywords": ["LLM reasoning", "llm hallucination", "llm confidence", "llm/AI persona", "agentic system", "ai agent assistant", "llm efficient reasoning", "llm token level confidence"],
     #     "interests": "I'm interested in LLM reasoning, hallucination, and confidence. Also focused on agentic systems and AI personas.",
@@ -39,11 +54,6 @@ INTEREST_DB = {
     #     "interests": "I'm interested in how people learn with GenAI and how learning community can be developed with GenAI",
     #     "current_projects": "Developing AI tutor using MMLM, extracting knowledge using LLM, evaluating complexity of video, accessible video-based learning, optimal interface for learning.",
     # },
-    # "U090X2ST9NF": { # Daho
-    #     "keywords": ["LLM", "education", "simulation", "evaluation", "economy", "productivity"],
-    #     "interests": "I'm interested in how people can interact with AI related system and its impact on education, economy, productivity and decision making process.",
-    #     "current_projects": "Personalized AI Tutor with student simulator, feedback evaluation, and knowledge tracing.",
-    # },
     # "UAP5VEP2R": { # Yoonseo
     #     "keywords": ["agent", "LLM", "decision making support", "user centered design", "qualitative methods", "UX", "Human-AI collaboration", "Responsible AI", "design methods", "social computing", "crowdsourcing", "stakeholder"],
     #     "interests": "I’m interested in simulating user representations for designers/experts to successfully understand and target the right user. I’m also interested in how to leverage technologies for social goods.",
@@ -58,11 +68,6 @@ INTEREST_DB = {
     #     "keywords": ["agents", "skill", "productivity", "future of work"],
     #     "interests": "How AI can successfully be deployed in diverse real-world settings like education, work, decision making, discussion, creative tasks, etc.",
     #     "current_projects": "Understanding how software engineers’ productivity and skill get affected by use of AI coding assistants.",
-    # },
-    # "U05BC4D4STU": { # Hyewon
-    #     "keywords": ["creativity", "interface", "agent", "llm", "design"],
-    #     "interests": "I’m interested in any HCI papers solving problems on design domain and the papers building a novel system for Human-AI collaboration.",
-    #     "current_projects": "I’m building a Human-AI co-creation tool for UI design in shared design workspace.",
     # },
     # "U06AJGGHZ5L": { # Daeheon
     #     "keywords": ["design", "VLM", "multimodal", "generative", "productivity", "labor", "creativity"],
