@@ -13,7 +13,7 @@ from utils.interest_matcher import match_top_n_members
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
 from utils.supabase_db import insert_metadata, get_metadata
-from utils.openai_utils import answer_question
+from utils.qna import answer_question
 
 load_dotenv()
 
@@ -22,13 +22,12 @@ app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SI
 flask_app = Flask(__name__)
 handler = SlackRequestHandler(app)
 
-# === 논문 업로드/링크 감지 이벤트 ===
+# === 논문 링크 감지 ===
 @app.event("message")
 def handle_message(event, say, client, logger):
     logger.info(event)
 
     text = event.get("text", "")
-    subtype = event.get("subtype")
     thread_ts = event["ts"]
     channel_id = event["channel"]
     user_id = event.get("user") or event.get("message", {}).get("user")
@@ -36,42 +35,15 @@ def handle_message(event, say, client, logger):
     thread_hash = get_thread_hash(thread_ts)
     pdf_path = get_pdf_path_from_thread(thread_ts)
 
-    # === Case 1: 파일 업로드 ===
-    if subtype == "file_share":
-        file_info = event["files"][0]
-        if file_info["filetype"] != "pdf":
-            logger.info("PDF 형식이 아님")
-            return
-
-        logger.info(f"PDF 감지: {file_info['name']}")
-        pdf_url = file_info["url_private_download"]
-        headers = {"Authorization": f"Bearer {os.getenv('SLACK_BOT_TOKEN')}"}
-        response = requests.get(pdf_url, headers=headers)
-
-        with open(pdf_path, "wb") as f:
-            f.write(response.content)
-
-        insert_metadata(thread_hash, {
-            "user_id": user_id,
-            "channel_id": channel_id,
-            "timestamp": thread_ts,
-            "filename": file_info.get("name", "unknown.pdf"),
-            "source": "uploaded"
-        })
-
-        text = extract_text_from_pdf(pdf_path)
-        post_summary_reply(client, channel_id, thread_ts, text)
-        return
-
-    # === Case 2: 링크로부터 다운로드 ===
+    # 링크로부터 다운로드
     success, source_link, filename = process_link_download(text, pdf_path)
     if success:
         insert_metadata(thread_hash, {
             "user_id": user_id,
             "channel_id": channel_id,
             "timestamp": thread_ts,
-            "filename": filename or os.path.basename(pdf_path),
-            "source": source_link
+            "filename": filename or os.path.basename(pdf_path), # e.g., 2508.00143.pdf
+            "source": source_link # e.g., https://arxiv.org/abs/2508.00143
         })
 
         text = extract_text_from_pdf(pdf_path)
@@ -144,7 +116,7 @@ def handle_qa(event, say, client, logger):
 # === 기타 이벤트 무시 ===
 @app.event("file_shared")
 def handle_file_shared_events(body, logger):
-    logger.info("file_shared 이벤트는 message 이벤트에서 처리하므로 무시함")
+    logger.info("file_shared 이벤트는 무시함. 링크만 처리됨.")
 
 # === 이벤트 핸들러 ===
 @flask_app.route("/slack/events", methods=["POST"])
