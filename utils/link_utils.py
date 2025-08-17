@@ -4,7 +4,7 @@ import os
 
 SUPPORTED_SOURCES = {
     "arxiv": {
-        "pattern": r"(https?://(?:arxiv\.org/abs/|ar5iv\.org/html/)(\d+\.\d+))",
+        "pattern": r"(https?://(?:arxiv\.org/(?:abs|pdf)/|ar5iv\.org/html/)(\d+\.\d+))",
         "pdf_url": lambda arxiv_id: f"https://arxiv.org/pdf/{arxiv_id}.pdf"
     },
     # TODO: Add more sources
