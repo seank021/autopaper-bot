@@ -60,7 +60,7 @@ def match_members_by_threshold(summary_text, threshold=0.5, weights=None, return
 
 
 """
-from database import INTEREST_DB
+from database import MEMBER_DB
 import os
 import openai
 from dotenv import load_dotenv
@@ -94,7 +94,7 @@ def classify_relevance(summary: str, keywords: str, interest_desc: str, curr_prj
 def match_members(summary_text):
     matched_user_ids = []
 
-    for user_id, profile in INTEREST_DB.items():
+    for user_id, profile in MEMBER_DB.items():
         keywords = ", ".join(profile.get("keywords", []))
         interest_text = profile.get("interests", "")
         curr_prjs = profile.get("current_projects", "")

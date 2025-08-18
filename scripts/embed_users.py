@@ -3,11 +3,11 @@ import os
 import json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding
-from database import INTEREST_DB
+from database.member import MEMBER_DB
 
 os.makedirs("user_embeddings", exist_ok=True)
 
-for user_id, info in INTEREST_DB.items():
+for user_id, info in MEMBER_DB.items():
     user_embedding = {}
     user_embedding["keywords"] = get_embedding(" ".join(info["keywords"]))
     user_embedding["interests"] = get_embedding(info["interests"])

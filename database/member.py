@@ -1,4 +1,4 @@
-INTEREST_DB = {
+MEMBER_DB = { # member slack id
     "U090X2M5P8B": { # Sean
         "keywords": ["education", "visualization", "social", "HCI"],
         "interests": "I'm interested in education area to improve the learning experience. I also like to work on visualization and social-problem-solving projects.",
@@ -13,6 +13,11 @@ INTEREST_DB = {
         "keywords": ["learning", "HAI", "agentic AI", "accessibility", "education", "multimodal", "AI in education", "HCI"],
         "interests": "human-AI collaboration in educational applications for developing tools and datasets for instructors or educators and students",
         "current_projects": "Video complexity evaluation and simplification for accessibility",
+    },
+    "U086M1L2F27": { # Seoyeon
+        "keywords": ["Human-AI Interaction", "2D Vision", "3D Vision", "Vision-Language Models", "UI/UX"],
+        "interests": "I'm interested in Human-AI Interaction and multimodal systems, with a particular focus on 2D Vision, 3D Vision, and Vision-Language Models that support creative and interactive workflows. I also like to explore evaluation and agentic design processes.",
+        "current_projects": "I'm working on CANVAS, a benchmark for evaluating tool-driven UI generation with vision-language models, focusing on replication, modification, and multi-turn reasoning tasks. I'm also conducting research on human-aligned diffusion image generation.",
     },
     "U090X2ST9NF": { # Daho
         "keywords": ["LLM", "education", "simulation", "evaluation", "economy", "productivity"],

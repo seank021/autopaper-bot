@@ -21,7 +21,9 @@ This project is designed to automate the process of summarizing research papers 
 
 ## Repository Structure
 - `app.py`: Main application file that runs the bot and handles Slack events.
-- `database.py`: Contains the lab member data including their Slack user IDs, keywords, interests, and current works.
+- `database/`
+    - `member.py`: Contains the lab member data including their Slack user IDs, keywords, interests, and current works.
+    - `project.py`: (TODO) Contains the project data including project channel Slack IDs, keywords, and descriptions.
 - `scripts/embed_users.py`: Script to embed user interests for matching.
     - You should run this script after updating `database.py` if you plan to use user embeddings for matching interests.
 - `user_embeddings/`: Contains the embeddings of each user generated from the `embed_users.py` script.
