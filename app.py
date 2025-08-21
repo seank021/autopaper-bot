@@ -6,16 +6,22 @@ import os
 import requests
 from subprocess import run
 
+# === Database ===
+from database.member import MEMBER_DB
+from database.test_member import TEST_MEMBER_DB
+
 # === Custom utility modules ===
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text, extract_keywords
-from utils.interest_matcher import match_top_n_members
+from utils.interest_matcher import match_top_n_members, get_reason_for_tagging
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
 from utils.supabase_db import insert_metadata, get_metadata
 from utils.qna import answer_question
 
 load_dotenv()
+
+TEST = False
 
 # === Slack app setup ===
 app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SIGNING_SECRET"))
@@ -62,33 +68,32 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
     summary = summarize_text(text)
     keywords = extract_keywords(text) # comma separated list of keywords
     keyword_tags = ' '.join([f"#{kw.replace(' ', '_')}" for kw in keywords])
-    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5)
-    user_mentions = ' '.join([f"<@{uid}>" for uid in matched_users])
+
+    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5, test=TEST)
+    member_db = TEST_MEMBER_DB if TEST else MEMBER_DB
+
+    user_reasons = []
+
+    for uid in matched_users:
+        reason = get_reason_for_tagging(uid, summary, test=TEST, member_db=member_db)
+        user_reasons.append(f"• <@{uid}>: {reason}")
+
     summary_text = f"*[AutoPaper Summary]*\n{summary}"
-    keywords_text = f"*Keywords:* {keyword_tags}"
+    keywords_text = f"*[Keywords]* {keyword_tags}"
 
     client.chat_postMessage(
         channel=channel,
         thread_ts=thread_ts,
-        text=f"{summary_text}\n\n{keywords_text}",
+        text=f"{summary_text}\n{keywords_text}",
         blocks=[
-            {
-                "type": "section",
-                "text": {"type": "mrkdwn", "text": summary_text}
-            },
-            {
-                "type": "section",
-                "text": {"type": "mrkdwn", "text": keywords_text}
-            },
+            {"type": "section", "text": {"type": "mrkdwn", "text": summary_text}},
+            {"type": "section", "text": {"type": "mrkdwn", "text": keywords_text}},
             {
                 "type": "context",
                 "elements": [
-                    {
-                        "type": "mrkdwn", 
-                        "text": f":bust_in_silhouette: May be relevant to: {user_mentions if user_mentions else ':x: Please manually mention users in the thread.'}"
-                    }
-                ]
-            }
+                    {"type": "mrkdwn", "text": ":bust_in_silhouette: May be relevant to"},
+                ] + [{"type": "mrkdwn", "text": user_reason} for user_reason in user_reasons]
+            },
         ]
     )
 

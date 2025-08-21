@@ -1,6 +1,13 @@
 import os
 import json
+import sys
+from openai import OpenAI
+from dotenv import load_dotenv
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding, cosine_similarity
+
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Helper function to compute weighted similarity
 def compute_weighted_similarity(summary_vec, user_vecs, weights):
@@ -36,6 +43,40 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
     top_users = [top_users[0]] + [user for user in top_users[1:] if similarity_scores[user] >= threshold]
 
     return (top_users, similarity_scores) if return_similarities else top_users
+
+# Reason for tagging this user
+def get_reason_for_tagging(user_id, summary_text, test=False, member_db=None):
+    if user_id not in member_db:
+        return "User not found in the database."
+    
+    profile = member_db[user_id]
+    interest_text = profile.get("interests", "")
+    project_text = profile.get("current_projects", "")
+
+    prompt = f"""
+    You are an academic assistant. Given a summary of a research paper and a user's research profile, explain why this user might be interested in the paper.
+    Respond with a concise explanation (20 words) of why this user should be tagged to read the paper, based on their interests or current projects.
+
+    # Paper Summary
+    {summary_text}
+
+    # User Interests
+    {interest_text}
+
+    # User Current Projects
+    {project_text}
+
+    # Response:
+    """.strip()
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return f"[Error generating reason] {e}"
 
 
 """
