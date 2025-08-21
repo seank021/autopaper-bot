@@ -47,12 +47,17 @@ def handle_message(event, say, client, logger):
         })
 
         text = extract_text_from_pdf(pdf_path)
-        post_summary_reply(client, channel_id, thread_ts, text)
+        post_summary_reply(client, channel_id, thread_ts, text, user_id)
         return
 
 # === 요약 결과 전송 ===
-def post_summary_reply(client, channel, thread_ts, text):
-    client.chat_typing(channel=channel)
+def post_summary_reply(client, channel, thread_ts, text, user_id):
+    client.chat_PostEphemeral(
+        channel=channel,
+        user=user_id,
+        thread_ts=thread_ts,
+        text="Processing your document and generating response..."
+    )
 
     summary = summarize_text(text)
     matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5)
@@ -83,8 +88,6 @@ def handle_qa(event, say, client, logger):
     thread_ts = event.get("thread_ts")
     channel_id = event["channel"]
     user_question = event.get("text", "").strip()
-
-    client.chat_typing(channel=channel_id)
 
     if not thread_ts:
         say("Please reply to a specific thread to ask a question.")
