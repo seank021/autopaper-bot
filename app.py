@@ -52,7 +52,7 @@ def handle_message(event, say, client, logger):
 
 # === 요약 결과 전송 ===
 def post_summary_reply(client, channel, thread_ts, text, user_id):
-    client.chat_postEphemeral(
+    client.chat_postMessage(
         channel=channel,
         user=user_id,
         thread_ts=thread_ts,
