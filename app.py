@@ -87,7 +87,9 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
             {"type": "section", "text": {"type": "mrkdwn", "text": summary_text}},
             {
                 "type": "context",
-                "elements": [{"type": "mrkdwn", "text": ":label: Keywords: " + keyword_tags}],
+                "elements": [
+                    {"type": "mrkdwn", "text": ":label: Keywords:"},
+                ] + [{"type": "mrkdwn", "text": keyword_tags}],
             },
             {
                 "type": "context",
