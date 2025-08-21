@@ -73,25 +73,26 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
     member_db = TEST_MEMBER_DB if TEST else MEMBER_DB
 
     user_reasons = []
-
     for uid in matched_users:
         reason = get_reason_for_tagging(uid, summary, test=TEST, member_db=member_db)
         user_reasons.append(f"• <@{uid}>: {reason}")
 
     summary_text = f"*[AutoPaper Summary]*\n{summary}"
-    keywords_text = f"*[Keywords]* {keyword_tags}"
 
     client.chat_postMessage(
         channel=channel,
         thread_ts=thread_ts,
-        text=f"{summary_text}\n{keywords_text}",
+        text=f"{summary_text}",
         blocks=[
             {"type": "section", "text": {"type": "mrkdwn", "text": summary_text}},
-            {"type": "section", "text": {"type": "mrkdwn", "text": keywords_text}},
+            {
+                "type": "context",
+                "elements": [{"type": "mrkdwn", "text": ":label: Keywords: " + keyword_tags}],
+            },
             {
                 "type": "context",
                 "elements": [
-                    {"type": "mrkdwn", "text": ":bust_in_silhouette: May be relevant to"},
+                    {"type": "mrkdwn", "text": ":bust_in_silhouette: May be relevant to:"},
                 ] + [{"type": "mrkdwn", "text": user_reason} for user_reason in user_reasons]
             },
         ]
