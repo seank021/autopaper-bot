@@ -24,8 +24,11 @@ This project is designed to automate the process of summarizing research papers 
 - `database/`
     - `member.py`: Contains the lab member data including their Slack user IDs, keywords, interests, and current works.
     - `project.py`: (TODO) Contains the project data including project channel Slack IDs, keywords, and descriptions.
-- `scripts/embed_users.py`: Script to embed user interests for matching.
-    - You should run this script after updating `database.py` if you plan to use user embeddings for matching interests.
+    - `test_member.py`: Contains the test lab member data for testing purposes.
+    - `test_project.py`: Contains the test project data for testing purposes.
+- `scripts/`
+    - `embed_users.py`: Script to embed user interests for matching. It containts only project and channel joiners. You **should** run this script after updating `database.py` if you plan to use user embeddings for matching interests.
+    - `test_embed_users.py`: Script to test the full user embedding. It contains the whole lab member data.
 - `user_embeddings/`: Contains the embeddings of each user generated from the `embed_users.py` script.
 - `utils/`
     - `embedding_utils.py`: Contains functions to embed user database.
@@ -40,3 +43,4 @@ This project is designed to automate the process of summarizing research papers 
 - `requirements.txt`: Contains the dependencies required to run the bot.
 - `test/`: Contains test files for the bot.
     - Especially, you can run `test/paper_user_match.py` to test the user matching functionality, then compare the results `test/paper_user_match_results.json` with the expected results in `test/paper_user_match_answers.json`.
+    - When this test is run, `test_user_embeddings` folder selected for the interest matcher.

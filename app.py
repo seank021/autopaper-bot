@@ -53,7 +53,7 @@ def handle_message(event, say, client, logger):
 # === 요약 결과 전송 ===
 def post_summary_reply(client, channel, thread_ts, text):
     summary = summarize_text(text)
-    matched_users, sim_dict = match_top_n_members(summary, return_similarities=True)
+    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5)
     user_mentions = ' '.join([f"<@{uid}>" for uid in matched_users])
     summary_text = f"*[AutoPaper Summary]*\n{summary}"
 

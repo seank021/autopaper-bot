@@ -13,31 +13,35 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
             total_weight += weight
     return round(weighted_sum / total_weight, 4) if total_weight > 0 else 0.0
 
-
 # Match top N members based on summary text - Currently, it matches one top member
-def match_top_n_members(summary_text, top_n=1, weights=None, return_similarities=False):
+def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5, test=False):
+    user_embeddings_dir = "user_embeddings" if not test else "test_user_embeddings"
     if weights is None:
         weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
 
     summary_vec = get_embedding(summary_text)
     similarity_scores = {}
 
-    for filename in os.listdir("user_embeddings"):
+    for filename in os.listdir(user_embeddings_dir):
         if not filename.endswith(".json"):
             continue
         user_id = filename.replace(".json", "")
-        with open(os.path.join("user_embeddings", filename)) as f:
+        with open(os.path.join(user_embeddings_dir, filename)) as f:
             user_vecs = json.load(f)
         similarity_scores[user_id] = compute_weighted_similarity(summary_vec, user_vecs, weights)
 
     sorted_users = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)
     top_users = [user_id for user_id, _ in sorted_users[:top_n]]
+    # The top user is always included, and the other users are filtered by the threshold
+    top_users = [top_users[0]] + [user for user in top_users[1:] if similarity_scores[user] >= threshold]
 
     return (top_users, similarity_scores) if return_similarities else top_users
 
 
-# Match members by threshold
-def match_members_by_threshold(summary_text, threshold=0.5, weights=None, return_similarities=False):
+"""
+# Match members by threshold - Not being used
+def match_members_by_threshold(summary_text, threshold=0.5, weights=None, return_similarities=False, test=False):
+    user_embeddings_dir = "user_embeddings" if not test else "test_user_embeddings"
     if weights is None:
         weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
 
@@ -45,11 +49,11 @@ def match_members_by_threshold(summary_text, threshold=0.5, weights=None, return
     matched_user_ids = []
     similarities = {}
 
-    for filename in os.listdir("user_embeddings"):
+    for filename in os.listdir(user_embeddings_dir):
         if not filename.endswith(".json"):
             continue
         user_id = filename.replace(".json", "")
-        with open(os.path.join("user_embeddings", filename)) as f:
+        with open(os.path.join(user_embeddings_dir, filename)) as f:
             user_vecs = json.load(f)
         sim = compute_weighted_similarity(summary_vec, user_vecs, weights)
         similarities[user_id] = sim
@@ -57,9 +61,11 @@ def match_members_by_threshold(summary_text, threshold=0.5, weights=None, return
             matched_user_ids.append(user_id)
 
     return (matched_user_ids, similarities) if return_similarities else matched_user_ids
+"""
 
 
 """
+# Match members using LLM-based classification - Not being used (too expensive)
 from database import MEMBER_DB
 import os
 import openai

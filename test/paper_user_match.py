@@ -45,7 +45,7 @@ for link in PAPER_LINKS:
     try:
         text = extract_text_from_pdf(pdf_path)
         summary = summarize_text(text)
-        matched_users, sim_dict = match_top_n_members(summary, return_similarities=True)
+        matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5, test=True)
 
         results.append({
             "paper": link,
