@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# Summarize text (paper) using OpenAI's GPT model
 def summarize_text(text):
     text = text
     response = client.chat.completions.create(
@@ -15,3 +16,14 @@ def summarize_text(text):
         ]
     )
     return response.choices[0].message.content.strip()
+
+# Extract keywords from text (paper) using OpenAI's GPT model
+def extract_keywords(text):
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant that extracts keywords from academic papers."},
+            {"role": "user", "content": f"Please extract 5 keywords from the following paper. Return them as a comma-separated list:\n{text}"}
+        ]
+    )
+    return response.choices[0].message.content.strip().split(', ')

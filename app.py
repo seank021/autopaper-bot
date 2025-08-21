@@ -8,7 +8,7 @@ from subprocess import run
 
 # === Custom utility modules ===
 from utils.pdf_utils import extract_text_from_pdf
-from utils.summarizer import summarize_text
+from utils.summarizer import summarize_text, extract_keywords
 from utils.interest_matcher import match_top_n_members
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
@@ -60,23 +60,33 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
     )
 
     summary = summarize_text(text)
+    keywords = extract_keywords(text) # comma separated list of keywords
+    keyword_tags = ' '.join([f"#{kw.replace(' ', '_')}" for kw in keywords])
     matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5)
     user_mentions = ' '.join([f"<@{uid}>" for uid in matched_users])
     summary_text = f"*[AutoPaper Summary]*\n{summary}"
+    keywords_text = f"*Keywords:* {keyword_tags}"
 
     client.chat_postMessage(
         channel=channel,
         thread_ts=thread_ts,
-        text=summary_text,
+        text=f"{summary_text}\n\n{keywords_text}",
         blocks=[
             {
                 "type": "section",
                 "text": {"type": "mrkdwn", "text": summary_text}
             },
             {
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": keywords_text}
+            },
+            {
                 "type": "context",
                 "elements": [
-                    {"type": "mrkdwn", "text": f":bust_in_silhouette: May be relevant to: {user_mentions if user_mentions else ':x: Please manually mention users in the thread.'}"}
+                    {
+                        "type": "mrkdwn", 
+                        "text": f":bust_in_silhouette: May be relevant to: {user_mentions if user_mentions else ':x: Please manually mention users in the thread.'}"
+                    }
                 ]
             }
         ]
