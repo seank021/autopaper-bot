@@ -60,6 +60,9 @@ def upsert_member(slack_id, name, keywords, interests, current_projects, embeddi
     }
     return supabase.table("members").upsert(data).execute()
 
+def remove_member(slack_id):
+    return supabase.table("members").delete().eq("slack_id", slack_id).execute()
+
 def get_member(slack_id):
     result = supabase.table("members").select("*").eq("slack_id", slack_id).execute()
     return result.data[0] if result.data else None
