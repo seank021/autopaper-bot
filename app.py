@@ -337,10 +337,12 @@ def handle_submission(ack, body, client, view, logger):
         embedding=embedding
     )
 
+    msg = "added" if "slack_id" in vals else "updated"
+
     client.chat_postMessage(
         channel=body["user"]["id"],
         text=(
-            f"✅ Member profile for <@{slack_id}> has been updated!\n"
+            f"✅ Member profile for <@{slack_id}> has been {msg}!\n"
             f"• *Keywords:* {', '.join(keywords)}\n"
             f"• *Interests:* {interests}\n"
             f"• *Projects:* {current_projects}"
