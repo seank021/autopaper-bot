@@ -290,13 +290,13 @@ def handle_modal_button(ack, body, client, logger):
             "type": "input",
             "block_id": "interests",
             "element": {"type": "plain_text_input", "action_id": "input", "initial_value": user_info["interests"]},
-            "label": {"type": "plain_text", "text": "Interests (string - e.g., I'm interested in visualization and HCI. I also ~~)"}
+            "label": {"type": "plain_text", "text": "Interests (string (could be multiple lines) - e.g., My research interests include visualization, HCI, and design. I am particularly interested in ~~)"}
         },
         {
             "type": "input",
             "block_id": "current_projects",
             "element": {"type": "plain_text_input", "action_id": "input", "initial_value": user_info["current_projects"]},
-            "label": {"type": "plain_text", "text": "Current Projects (string - e.g., I'm currently working on visualization of large-scale data. It is about ~~)"}
+            "label": {"type": "plain_text", "text": "Current Projects (string (could be multiple lines) - e.g., I'm currently working on visualization of large-scale data. It is about ~~)"}
         }
     ])
 
