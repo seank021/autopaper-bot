@@ -8,17 +8,13 @@ import re
 from subprocess import run
 import time
 
-# === Database ===
-from database.member import MEMBER_DB
-from database.test_member import TEST_MEMBER_DB
-
 # === Custom utility modules ===
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text, extract_keywords
 from utils.interest_matcher import match_top_n_members, get_reason_for_tagging
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
-from utils.supabase_db import insert_metadata, get_metadata, insert_log
+from utils.supabase_db import insert_metadata, get_metadata, insert_log, get_all_members
 from utils.qna import answer_question
 from utils.user_info import get_user_info
 
@@ -73,7 +69,7 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
     keyword_tags = ' '.join([f"#{kw.replace(' ', '_')}" for kw in keywords])
 
     matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5, test=TEST)
-    member_db = TEST_MEMBER_DB if TEST else MEMBER_DB
+    member_db = {m["slack_id"]: m for m in get_all_members()}
 
     user_reasons = []
     for uid in matched_users:
@@ -140,7 +136,7 @@ def handle_mention(event, say, client, logger):
     
     # === /members ===
     if command == "/members":
-        member_db = TEST_MEMBER_DB if TEST else MEMBER_DB
+        member_db = {m["slack_id"]: m for m in get_all_members()}
         formatted = "\t".join(
             [f"{get_user_info(uid)["display_name"] if get_user_info(uid)["display_name"] else get_user_info(uid)["name"]}" for uid, profile in member_db.items()]
         )

@@ -5,6 +5,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding, cosine_similarity
+from utils.supabase_db import get_all_members
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -22,20 +23,23 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
 
 # Match top N members based on summary text - Currently, it matches one top member
 def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5, test=False):
-    user_embeddings_dir = "test_user_embeddings" if test else "user_embeddings"
     if weights is None:
         weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
 
     summary_vec = get_embedding(summary_text)
     similarity_scores = {}
 
-    for filename in os.listdir(user_embeddings_dir):
-        if not filename.endswith(".json"):
+    members = get_all_members() # From Supabase
+
+    for member in members:
+        slack_id = member.get("slack_id")
+        embedding = member.get("embedding", {}) # dict with 'interests', 'current_projects', ...
+
+        if not slack_id or not embedding:
             continue
-        user_id = filename.replace(".json", "")
-        with open(os.path.join(user_embeddings_dir, filename)) as f:
-            user_vecs = json.load(f)
-        similarity_scores[user_id] = compute_weighted_similarity(summary_vec, user_vecs, weights)
+
+        sim_score = compute_weighted_similarity(summary_vec, embedding, weights)
+        similarity_scores[slack_id] = sim_score
 
     sorted_users = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)
     top_users = [user_id for user_id, _ in sorted_users[:top_n]]
@@ -77,86 +81,3 @@ def get_reason_for_tagging(user_id, summary_text, test=False, member_db=None):
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"[Error generating reason] {e}"
-
-
-"""
-# Match members by threshold - Not being used
-def match_members_by_threshold(summary_text, threshold=0.5, weights=None, return_similarities=False, test=False):
-    user_embeddings_dir = "test_user_embeddings" if test else "user_embeddings"
-    if weights is None:
-        weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
-
-    summary_vec = get_embedding(summary_text)
-    matched_user_ids = []
-    similarities = {}
-
-    for filename in os.listdir(user_embeddings_dir):
-        if not filename.endswith(".json"):
-            continue
-        user_id = filename.replace(".json", "")
-        with open(os.path.join(user_embeddings_dir, filename)) as f:
-            user_vecs = json.load(f)
-        sim = compute_weighted_similarity(summary_vec, user_vecs, weights)
-        similarities[user_id] = sim
-        if sim >= threshold:
-            matched_user_ids.append(user_id)
-
-    return (matched_user_ids, similarities) if return_similarities else matched_user_ids
-"""
-
-
-"""
-# Match members using LLM-based classification - Not being used (too expensive)
-from database import MEMBER_DB
-import os
-import openai
-from dotenv import load_dotenv
-
-load_dotenv()
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-def classify_relevance(summary: str, keywords: str, interest_desc: str, curr_prjs: str) -> bool:
-    prompt = (
-        "You are an academic assistant. Based on the following paper summary and the user's interests, "
-        "determine if this paper is likely to be of interest to the user. "
-        "The users are from the HCI research community.\n\n"
-        f"Paper Summary:\n{summary}\n\n"
-        f"User Interests:\n{interest_desc}\n"
-        f"User Current Projects:\n{curr_prjs}\n"
-        f"User Keywords:\n{keywords}\n\n"
-        "Answer only 'Yes' or 'No'."
-    )
-
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4.1-nano",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        reply = response.choices[0].message.content.strip().lower()
-        return "yes" in reply
-    except Exception as e:
-        print(f"[match_members error] {e}")
-        return False
-
-def match_members(summary_text):
-    matched_user_ids = []
-
-    for user_id, profile in MEMBER_DB.items():
-        keywords = ", ".join(profile.get("keywords", []))
-        interest_text = profile.get("interests", "")
-        curr_prjs = profile.get("current_projects", "")
-
-        # === Step 1: Keyword match ===
-        # keyword_match = any(
-        #     kw.lower() in summary_text.lower() for kw in keywords
-        # )
-
-        # === Step 2: LLM-based semantic match ===
-        llm_match = classify_relevance(summary_text, keywords, interest_text, curr_prjs)
-
-        # === Hybrid Match: Either is True ===
-        if llm_match:
-            matched_user_ids.append(user_id)
-
-    return matched_user_ids
-"""
