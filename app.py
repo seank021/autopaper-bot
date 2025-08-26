@@ -24,7 +24,7 @@ from utils.user_info import get_user_info
 
 load_dotenv()
 
-TEST = False
+TEST = True
 
 # === Slack app setup ===
 app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SIGNING_SECRET"))

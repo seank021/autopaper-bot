@@ -22,7 +22,7 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
 
 # Match top N members based on summary text - Currently, it matches one top member
 def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5, test=False):
-    user_embeddings_dir = "user_embeddings" if not test else "test_user_embeddings"
+    user_embeddings_dir = "test_user_embeddings" if test else "user_embeddings"
     if weights is None:
         weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
 
@@ -82,7 +82,7 @@ def get_reason_for_tagging(user_id, summary_text, test=False, member_db=None):
 """
 # Match members by threshold - Not being used
 def match_members_by_threshold(summary_text, threshold=0.5, weights=None, return_similarities=False, test=False):
-    user_embeddings_dir = "user_embeddings" if not test else "test_user_embeddings"
+    user_embeddings_dir = "test_user_embeddings" if test else "user_embeddings"
     if weights is None:
         weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
 
