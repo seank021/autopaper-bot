@@ -4,6 +4,7 @@ from flask import Flask, request
 from dotenv import load_dotenv
 import os
 import requests
+import re
 from subprocess import run
 import time
 
@@ -19,6 +20,7 @@ from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
 from utils.supabase_db import insert_metadata, get_metadata, insert_log
 from utils.qna import answer_question
+from utils.user_info import get_user_info
 
 load_dotenv()
 
@@ -101,20 +103,55 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
         ]
     )
 
-# === Q&A 핸들러 (@autopaper 태그 시) ===
+# === @autopaper 태그 시 ===
+# 1. /help: 도움말 안내
+# 2. /members: 멤버 목록 안내
+# 3. {text}: 질문에 답변
 @app.event("app_mention")
-def handle_qa(event, say, client, logger):
+def handle_mention(event, say, client, logger):
     thread_ts = event.get("thread_ts")
     channel_id = event["channel"]
-    user_question = event.get("text", "").strip()
+    user_id = event.get("user")
+    full_text = event.get("text", "").strip()
 
     if not thread_ts:
         say("Please reply to a specific thread to ask a question.")
         return
 
     thread_hash = get_thread_hash(thread_ts)
-    metadata = get_metadata(thread_hash)
 
+    # === 멘션 제거 ===
+    bot_user_id = client.auth_test()["user_id"] # 봇 user ID
+    mention_pattern = rf"<@{bot_user_id}>"
+    command = re.sub(mention_pattern, "", full_text).strip().lower()
+
+    # === /help ===
+    if command == "/help":
+        say(
+            text=(
+                "*🤖 AutoPaper Help*\n"
+                "`@AutoPaper [question]` → Ask a question about the paper\n"
+                "`@AutoPaper /help` → Show this help message\n"
+                "`@AutoPaper /members` → Show member list that AutoPaper can tag\n\n"
+            ),
+            thread_ts=thread_ts
+        )
+        return
+    
+    # === /members ===
+    if command == "/members":
+        member_db = TEST_MEMBER_DB if TEST else MEMBER_DB
+        formatted = "\t".join(
+            [f"{get_user_info(uid)["display_name"] if get_user_info(uid)["display_name"] else get_user_info(uid)["name"]}" for uid, profile in member_db.items()]
+        )
+        say(
+            text=f"*🧑‍🔬 AutoPaper Members*\n{formatted}",
+            thread_ts=thread_ts
+        )
+        return
+
+    # === Normal QA (default) ===
+    metadata = get_metadata(thread_hash)
     if not metadata:
         say("Cannot find metadata for this thread. Please ensure the thread has a valid PDF or link.")
         return
@@ -131,16 +168,16 @@ def handle_qa(event, say, client, logger):
             say("PDF file not found. Please ensure it was uploaded or linked correctly.")
             return
 
-    text = extract_text_from_pdf(pdf_path)
-    answer = answer_question(text, user_question, thread_hash, max_history=10)
+    context_text = extract_text_from_pdf(pdf_path)
+    answer = answer_question(context_text, command, thread_hash, max_history=10)
 
     # 질문/답변 로그 저장
     timestamp = time.time()
-    insert_log(thread_hash, "user", user_question, user_id=event.get("user"), timestamp=timestamp)
+    insert_log(thread_hash, "user", command, user_id=event.get("user"), timestamp=timestamp)
     insert_log(thread_hash, "assistant", answer, timestamp=timestamp + 0.001)
 
     say(
-        text=f"*Q: {user_question}*\n*A:* {answer}",
+        text=f"*Q: {command}*\n*A:* {answer}",
         thread_ts=thread_ts
     )
 
