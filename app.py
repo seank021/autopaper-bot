@@ -153,7 +153,7 @@ def handle_mention(event, say, client, logger):
         )
         return
     
-    # === /fix_member ===
+    # === /fix_member, /add_member ===
     if command == "/fix_member" or command == "/add_member":
         # 안내 메시지 + 버튼 응답 (trigger modal)
         say(
@@ -175,6 +175,7 @@ def handle_mention(event, say, client, logger):
         )
         return
 
+    # === /remove_member ===
     if command == "/remove_member":
         say(
             text="Are you sure you want to remove your profile from the AutoPaper member database?",
