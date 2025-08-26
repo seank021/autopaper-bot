@@ -71,7 +71,7 @@ def get_reason_for_tagging(user_id, summary_text, test=False, member_db=None):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1-nano",
             messages=[{"role": "user", "content": prompt}]
         )
         return response.choices[0].message.content.strip()
@@ -129,7 +129,7 @@ def classify_relevance(summary: str, keywords: str, interest_desc: str, curr_prj
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4.1-nano",
             messages=[{"role": "user", "content": prompt}]
         )
         reply = response.choices[0].message.content.strip().lower()

@@ -2,7 +2,7 @@
 This project is designed to automate the process of summarizing research papers and matching the most relevant users based on their interests, in the Slack workspace.
 
 ## Features
-- Summarizes research papers using OpenAI's GPT-4o model.
+- Summarizes research papers using OpenAI's GPT-4.1-nano model.
 - Matches users with similar interests based on their paper summaries.
 - QnA functionality to answer questions about the papers by tagging the bot in Slack.
 
@@ -33,7 +33,7 @@ This project is designed to automate the process of summarizing research papers 
 - `utils/`
     - `embedding_utils.py`: Contains functions to embed user database.
     - `interest_matcher.py`: Contains functions to match users based on their interests.
-        - LLM matcher vs. Embedding matcher: The LLM matcher uses OpenAI's GPT-4o model to match users based on their interests, while the embedding matcher uses pre-computed embeddings of user interests for faster matching. Currently, the embedding matcher is being used.
+        - LLM matcher vs. Embedding matcher: The LLM matcher uses OpenAI's GPT-4.1-nano model to match users based on their interests, while the embedding matcher uses pre-computed embeddings of user interests for faster matching. Currently, the embedding matcher is being used.
     - `supabase_db.py`: Contains functions to insert and get paper metadata from Supabase.
     - `path_utils.py`: Contains functions to handle temp paths and file management.
     - `pdf_utils.py`: Contains functions to extract text from PDF files.

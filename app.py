@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import requests
 from subprocess import run
+import time
 
 # === Database ===
 from database.member import MEMBER_DB
@@ -16,7 +17,7 @@ from utils.summarizer import summarize_text, extract_keywords
 from utils.interest_matcher import match_top_n_members, get_reason_for_tagging
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
-from utils.supabase_db import insert_metadata, get_metadata
+from utils.supabase_db import insert_metadata, get_metadata, insert_log
 from utils.qna import answer_question
 
 load_dotenv()
@@ -131,7 +132,12 @@ def handle_qa(event, say, client, logger):
             return
 
     text = extract_text_from_pdf(pdf_path)
-    answer = answer_question(text, user_question)
+    answer = answer_question(text, user_question, thread_hash, max_history=10)
+
+    # 질문/답변 로그 저장
+    timestamp = time.time()
+    insert_log(thread_hash, "user", user_question, user_id=event.get("user"), timestamp=timestamp)
+    insert_log(thread_hash, "assistant", answer, timestamp=timestamp + 0.001)
 
     say(
         text=f"*Q: {user_question}*\n*A:* {answer}",
