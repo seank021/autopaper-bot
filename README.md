@@ -27,9 +27,11 @@ This project is designed to automate the process of summarizing research papers 
     - `test_member.py`: Contains the test lab member data for testing purposes.
     - `test_project.py`: Contains the test project data for testing purposes.
 - `scripts/`
+    - `add_member_on_supabase.py`: Script to add lab members to Supabase. It generates embeddings for each member and stores them in Supabase. You **should** run this script to construct the initial user database on Supabase.
     - `embed_users.py`: Script to embed user interests for matching. It containts only project and channel joiners. You **should** run this script after updating `database.py` if you plan to use user embeddings for matching interests.
     - `test_embed_users.py`: Script to test the full user embedding. It contains the whole lab member data.
 - `user_embeddings/`: Contains the embeddings of each user generated from the `embed_users.py` script.
+- `test_user_embeddings/`: Contains the embeddings of each test user generated from the `test_embed_users.py` script.
 - `utils/`
     - `embedding_utils.py`: Contains functions to embed user database.
     - `interest_matcher.py`: Contains functions to match users based on their interests.
@@ -40,6 +42,7 @@ This project is designed to automate the process of summarizing research papers 
     - `link_utils.py`: Contains functions to support paper links for pdf extraction and metadata storage. (currently only supports arXiv links)
     - `summarizer.py`: Contains functions to summarize text using OpenAI's API.
     - `qna.py`: Contains functions to answer questions about the papers using OpenAI's API.
+    - `user_info.py`: Contains functions to get user information from Slack API.
 - `requirements.txt`: Contains the dependencies required to run the bot.
 - `test/`: Contains test files for the bot.
     - Especially, you can run `test/paper_user_match.py` to test the user matching functionality, then compare the results `test/paper_user_match_results.json` with the expected results in `test/paper_user_match_answers.json`.
