@@ -166,7 +166,7 @@ def handle_mention(event, say, client, logger):
                         {
                             "type": "button",
                             "action_id": "open_add_or_fix_modal",
-                            "text": {"type": "plain_text", "text": "Click to open the form"},
+                            "text": {"type": "plain_text", "text": "Click to fix your profile" if command == "/fix_member" else "Click to add the profile"},
                             "value": "/add_member" if command == "/add_member" else f"/fix_member {user_id}"
                         }
                     ]
