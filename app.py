@@ -156,9 +156,9 @@ def handle_mention(event, say, client, logger):
     # === /fix_member, /add_member ===
     if command == "/fix_member" or command == "/add_member":
         # 안내 메시지 + 버튼 응답 (trigger modal)
-        say(
+        client.chat_postMessage(
+            channel=user_id,
             text="Please click the button below to open the form.",
-            thread_ts=thread_ts,
             blocks=[
                 {
                     "type": "actions",
@@ -177,9 +177,9 @@ def handle_mention(event, say, client, logger):
 
     # === /remove_member ===
     if command == "/remove_member":
-        say(
+        client.chat_postMessage(
+            channel=user_id,
             text="Are you sure you want to remove your profile from the AutoPaper member database?",
-            thread_ts=thread_ts,
             blocks=[
                 {
                     "type": "actions",
