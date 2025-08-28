@@ -155,6 +155,13 @@ def handle_mention(event, say, client, logger):
     
     # === /fix_member, /add_member ===
     if command == "/fix_member" or command == "/add_member":
+        # 안내 메시지 (ephemeral)
+        client.chat_postEphemeral(
+            channel=channel_id,
+            user=user_id,
+            thread_ts=thread_ts,
+            test="Please check your DM for further instructions."
+        )
         # 안내 메시지 + 버튼 응답 (trigger modal)
         client.chat_postMessage(
             channel=user_id,
@@ -177,6 +184,13 @@ def handle_mention(event, say, client, logger):
 
     # === /remove_member ===
     if command == "/remove_member":
+        # 안내 메시지 (ephemeral)
+        client.chat_postEphemeral(
+            channel=channel_id,
+            user=user_id,
+            thread_ts=thread_ts,
+            test="Please check your DM for further instructions."
+        )
         client.chat_postMessage(
             channel=user_id,
             text="Are you sure you want to remove your profile from the AutoPaper member database?",
