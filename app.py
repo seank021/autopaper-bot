@@ -160,7 +160,7 @@ def handle_mention(event, say, client, logger):
             channel=channel_id,
             user=user_id,
             thread_ts=thread_ts,
-            test="Please check your DM for further instructions."
+            text="Please check your DM for further instructions."
         )
         # 안내 메시지 + 버튼 응답 (trigger modal)
         client.chat_postMessage(
@@ -189,7 +189,7 @@ def handle_mention(event, say, client, logger):
             channel=channel_id,
             user=user_id,
             thread_ts=thread_ts,
-            test="Please check your DM for further instructions."
+            text="Please check your DM for further instructions."
         )
         client.chat_postMessage(
             channel=user_id,
