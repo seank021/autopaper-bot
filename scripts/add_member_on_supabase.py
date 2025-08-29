@@ -7,7 +7,7 @@ from utils.supabase_db import insert_member
 from database.member import MEMBER_DB
 from database.test_member import TEST_MEMBER_DB
 
-TEST = True
+TEST = False
 
 def main():
     dir = "test_user_embeddings" if TEST else "user_embeddings"
