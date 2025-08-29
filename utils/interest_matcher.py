@@ -43,7 +43,10 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
 
     sorted_users = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)
     top_users = [user_id for user_id, _ in sorted_users[:top_n]]
-    # The top user is always included, and the other users are filtered by the threshold
+    # If the top user's similarity is below 0.2, return empty list
+    if similarity_scores[top_users[0]] < 0.35:
+        return ([], similarity_scores) if return_similarities else []
+    # The top user is always included unless it has very low similarity, and the other users are filtered by the threshold
     top_users = [top_users[0]] + [user for user in top_users[1:] if similarity_scores[user] >= threshold]
 
     return (top_users, similarity_scores) if return_similarities else top_users

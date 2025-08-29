@@ -69,7 +69,7 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
     keywords = extract_keywords(text) # comma separated list of keywords
     keyword_tags = ' '.join([f"#{kw.replace(' ', '_')}" for kw in keywords])
 
-    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.45, test=TEST)
+    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5, test=TEST)
     member_db = {m["slack_id"]: m for m in get_all_members()}
 
     user_reasons = []
