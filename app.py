@@ -95,7 +95,11 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
                 "type": "context",
                 "elements": [
                     {"type": "mrkdwn", "text": ":bust_in_silhouette: May be relevant to:"},
-                ] + [{"type": "mrkdwn", "text": user_reason} for user_reason in user_reasons]
+                ] + (
+                    [{"type": "mrkdwn", "text": user_reason} for user_reason in user_reasons]
+                    if user_reasons
+                    else [{"type": "mrkdwn", "text": "No relevant user found. Please mention manually."}]
+                )
             },
         ]
     )
