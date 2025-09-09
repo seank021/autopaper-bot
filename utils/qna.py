@@ -24,15 +24,17 @@ def answer_question(context: str, question: str, thread_hash: str, max_history: 
     messages.insert(0, {
         "role": "system",
         "content": (
-            "You are a helpful academic assistant. The following is the content of the research paper "
-            "you will refer to when answering questions:\n\n" + context.strip()
+            "You are a helpful academic assistant. Keep your answers concise and to the point, optimized for mobile reading. "
+            "Only include the essential details unless further explanation is requested. "
+            "The following is the content of the research paper you will refer to:\n\n" + context.strip()
         )
     })
 
     try:
         response = client.chat.completions.create(
             model="gpt-4.1-nano",
-            messages=messages
+            messages=messages,
+            max_tokens=300
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
