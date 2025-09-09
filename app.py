@@ -21,8 +21,6 @@ from utils.user_info import get_user_info
 
 load_dotenv()
 
-TEST = True
-
 # === Slack app setup ===
 app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SIGNING_SECRET"))
 flask_app = Flask(__name__)
@@ -69,12 +67,12 @@ def post_summary_reply(client, channel, thread_ts, text, user_id):
     keywords = extract_keywords(text) # comma separated list of keywords
     keyword_tags = ' '.join([f"#{kw.replace(' ', '_')}" for kw in keywords])
 
-    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5, test=TEST)
+    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5)
     member_db = {m["slack_id"]: m for m in get_all_members()}
 
     user_reasons = []
     for uid in matched_users:
-        reason = get_reason_for_tagging(uid, summary, test=TEST, member_db=member_db)
+        reason = get_reason_for_tagging(uid, summary, member_db=member_db)
         user_reasons.append(f"• <@{uid}>: {reason}")
 
     summary_text = f"*[AutoPaper Summary]*\n{summary}"

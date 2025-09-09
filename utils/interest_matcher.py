@@ -22,7 +22,7 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
     return round(weighted_sum / total_weight, 4) if total_weight > 0 else 0.0
 
 # Match top N members based on summary text - Currently, it matches one top member
-def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5, test=False):
+def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5):
     if weights is None:
         weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
 
@@ -52,7 +52,7 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
     return (top_users, similarity_scores) if return_similarities else top_users
 
 # Reason for tagging this user
-def get_reason_for_tagging(user_id, summary_text, test=False, member_db=None):
+def get_reason_for_tagging(user_id, summary_text, member_db=None):
     if user_id not in member_db:
         return "User not found in the database."
     

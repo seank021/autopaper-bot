@@ -46,7 +46,7 @@ for link in PAPER_LINKS:
     try:
         text = extract_text_from_pdf(pdf_path)
         summary = summarize_text(text)
-        matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5, test=False)
+        matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5)
         sim_dict = dict(sorted(sim_dict.items(), key=lambda item: item[1], reverse=True))
 
         results.append({
