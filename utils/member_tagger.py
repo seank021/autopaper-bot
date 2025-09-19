@@ -24,7 +24,7 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
 # Match top N members based on summary text - Currently, it matches one top member
 def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5):
     if weights is None:
-        weights = {"keywords": 0.0, "interests": 0.5, "current_projects": 0.5}
+        weights = {"keywords": 0.7, "interests": 0.3}  # Default weights
 
     summary_vec = get_embedding(summary_text)
     similarity_scores = {}
@@ -33,7 +33,7 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
 
     for member in members:
         slack_id = member.get("slack_id")
-        embedding = member.get("embedding", {}) # dict with 'interests', 'current_projects', ...
+        embedding = member.get("embedding", {}) # dict
 
         if not slack_id or not embedding:
             continue
@@ -43,7 +43,7 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
 
     sorted_users = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)
     top_users = [user_id for user_id, _ in sorted_users[:top_n]]
-    # If the top user's similarity is below 0.2, return empty list
+    # If the top user's similarity is below 0.35, return empty list
     if similarity_scores[top_users[0]] < 0.35:
         return ([], similarity_scores) if return_similarities else []
     # The top user is always included unless it has very low similarity, and the other users are filtered by the threshold
@@ -57,21 +57,22 @@ def get_reason_for_tagging(user_id, summary_text, member_db=None):
         return "User not found in the database."
     
     profile = member_db[user_id]
+    keywords = profile.get("keywords", [])
     interest_text = profile.get("interests", "")
-    project_text = profile.get("current_projects", "")
 
     prompt = f"""
-    You are an academic assistant. Given a summary of a research paper and a user's research profile, explain why this user might be interested in the paper.
-    Respond with a concise explanation (20 words) of why this user should be tagged to read the paper, based on their interests or current projects.
+    You are an academic assistant for the field of HCI (Human-Computer Interaction) research. 
+    Given a summary of a research paper and a user's research profile, explain why this user might be interested in the paper.
+    Respond with a concise explanation (15 words) of why this user should be tagged to read the paper, based on their keywords and interests.
 
     # Paper Summary
     {summary_text}
 
+    # User Keywords
+    {', '.join(keywords)}
+
     # User Interests
     {interest_text}
-
-    # User Current Projects
-    {project_text}
 
     # Response:
     """.strip()

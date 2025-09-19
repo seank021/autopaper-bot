@@ -34,7 +34,7 @@ def answer_question(context: str, question: str, thread_hash: str, max_history: 
         response = client.chat.completions.create(
             model="gpt-4.1-nano",
             messages=messages,
-            max_tokens=300
+            max_tokens=250,
         )
         return response.choices[0].message.content.strip()
     except Exception as e:

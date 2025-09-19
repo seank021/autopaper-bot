@@ -11,7 +11,6 @@ for user_id, info in MEMBER_DB.items():
     user_embedding = {}
     user_embedding["keywords"] = get_embedding(" ".join(info["keywords"]))
     user_embedding["interests"] = get_embedding(info["interests"])
-    user_embedding["current_projects"] = get_embedding(info["current_projects"])
 
     with open(f"user_embeddings/{user_id}.json", "w") as f:
         json.dump(user_embedding, f)

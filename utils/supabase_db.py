@@ -38,24 +38,22 @@ def get_logs(thread_hash, limit=10):
     return result.data if result.data else []
 
 # Members
-def insert_member(slack_id, name, keywords, interests, current_projects, embedding):
+def insert_member(slack_id, name, keywords, interests, embedding):
     data = {
         "slack_id": slack_id,
         "name": name,
         "keywords": keywords,
         "interests": interests,
-        "current_projects": current_projects,
         "embedding": embedding # dict → jsonb
     }
     return supabase.table("members").insert(data).execute()
 
-def upsert_member(slack_id, name, keywords, interests, current_projects, embedding):
+def upsert_member(slack_id, name, keywords, interests, embedding):
     data = {
         "slack_id": slack_id,
         "name": name,
         "keywords": keywords,
         "interests": interests,
-        "current_projects": current_projects,
         "embedding": embedding
     }
     return supabase.table("members").upsert(data).execute()

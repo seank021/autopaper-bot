@@ -22,7 +22,7 @@ This project is designed to automate the process of summarizing research papers 
 ## Repository Structure
 - `app.py`: Main application file that runs the bot and handles Slack events.
 - `database/`
-    - `member.py`: Contains the lab member data including their Slack user IDs, keywords, interests, and current works.
+    - `member.py`: Contains the lab member data including their Slack user IDs, keywords, and interests.
     - `project.py`: (TODO) Contains the project data including project channel Slack IDs, keywords, and descriptions.
     - `test_member.py`: Contains the test lab member data for testing purposes.
     - `test_project.py`: Contains the test project data for testing purposes.

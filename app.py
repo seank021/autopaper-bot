@@ -12,7 +12,7 @@ from slack_sdk.errors import SlackApiError
 # === Custom utility modules ===
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text, extract_keywords
-from utils.interest_matcher import match_top_n_members, get_reason_for_tagging
+from utils.member_tagger import match_top_n_members, get_reason_for_tagging
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
 from utils.supabase_db import insert_metadata, get_metadata, insert_log, get_member, get_all_members, upsert_member, remove_member
@@ -346,14 +346,14 @@ def slash_help(ack, body, client, logger):
 # === 멤버 추가/수정 모달 및 제출 처리 ===
 def open_add_or_fix_modal(client, trigger_id, user_id, is_add: bool):
     if is_add:
-        user_info = {"slack_id": "", "name": "", "keywords": "", "interests": "", "current_projects": ""}
+        user_info = {"slack_id": "", "name": "", "keywords": "", "interests": ""}
     else:
         # 본인 프로필 수정: user_id 기준
-        existing = get_member(user_id) or {"slack_id": user_id, "name": "", "keywords": "", "interests": "", "current_projects": ""}
+        existing = get_member(user_id) or {"slack_id": user_id, "name": "", "keywords": "", "interests": ""}
         user_info = existing
 
     # normalize for inputs
-    for key in ["slack_id", "name", "keywords", "interests", "current_projects"]:
+    for key in ["slack_id", "name", "keywords", "interests"]:
         val = user_info.get(key)
         if isinstance(val, list):
             user_info[key] = ", ".join(val)
@@ -389,12 +389,6 @@ def open_add_or_fix_modal(client, trigger_id, user_id, is_add: bool):
             "block_id": "interests",
             "element": {"type": "plain_text_input", "action_id": "input", "initial_value": user_info["interests"]},
             "label": {"type": "plain_text", "text": "Interests (multi-line OK)"}
-        },
-        {
-            "type": "input",
-            "block_id": "current_projects",
-            "element": {"type": "plain_text_input", "action_id": "input", "initial_value": user_info["current_projects"]},
-            "label": {"type": "plain_text", "text": "Current Projects (multi-line OK)"}
         }
     ])
 
@@ -439,12 +433,10 @@ def handle_submission(ack, body, client, view, logger):
     name = vals["name"]["input"]["value"].strip()
     keywords = [kw.strip() for kw in vals["keywords"]["input"]["value"].split(",") if kw.strip()]
     interests = vals["interests"]["input"]["value"].strip()
-    current_projects = vals["current_projects"]["input"]["value"].strip()
 
     embedding = {
         "keywords": get_embedding(" ".join(keywords)) if keywords else [],
-        "interests": get_embedding(interests) if interests else [],
-        "current_projects": get_embedding(current_projects) if current_projects else []
+        "interests": get_embedding(interests) if interests else []
     }
 
     upsert_member(
@@ -452,7 +444,6 @@ def handle_submission(ack, body, client, view, logger):
         name=name,
         keywords=keywords,
         interests=interests,
-        current_projects=current_projects,
         embedding=embedding
     )
 
@@ -463,7 +454,6 @@ def handle_submission(ack, body, client, view, logger):
             f"✅ Member profile for <@{slack_id}> has been {msg}!\n"
             f"• *Keywords:* {', '.join(keywords) if keywords else '(none)'}\n"
             f"• *Interests:* {interests or '(none)'}\n"
-            f"• *Projects:* {current_projects or '(none)'}"
         )
     )
 

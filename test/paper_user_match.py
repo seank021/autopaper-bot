@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.link_utils import process_link_download
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text
-from utils.interest_matcher import match_top_n_members
+from utils.member_tagger import match_top_n_members
 
 PAPER_LINKS = [
     "https://arxiv.org/abs/2503.23315",

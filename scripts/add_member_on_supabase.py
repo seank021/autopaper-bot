@@ -22,7 +22,6 @@ def main():
         embedding = {
             "keywords": get_embedding(" ".join(info["keywords"])),
             "interests": get_embedding(info["interests"]),
-            "current_projects": get_embedding(info["current_projects"]),
         }
 
         # 로컬 저장 (선택적)
@@ -36,7 +35,6 @@ def main():
                 name=info["name"],
                 keywords=info["keywords"],
                 interests=info["interests"],
-                current_projects=info["current_projects"],
                 embedding=embedding
             )
             print(f"[✓] Inserted {slack_id}")
