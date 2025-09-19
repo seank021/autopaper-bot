@@ -24,7 +24,7 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
 # Match top N members based on summary text - Currently, it matches one top member
 def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5):
     if weights is None:
-        weights = {"keywords": 0.7, "interests": 0.3}  # Default weights
+        weights = {"keywords": 0.3, "interests": 0.7} # Default weights
 
     summary_vec = get_embedding(summary_text)
     similarity_scores = {}

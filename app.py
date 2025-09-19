@@ -326,7 +326,7 @@ def slash_members(ack, body, client, logger):
 def help_text():
     return (
         "*🤖 AutoPaper Help*\n"
-        "• `@AutoPaper [question]` → Ask a question about the paper (in thread)\n"
+        "• `@AutoPaper [question]` → Ask a question about the paper (by mentioning the bot in the thread)\n"
         "• `/members` → Show member list\n"
         "• `/add_member` → Add a new member\n"
         "• `/fix_member` → Fix my profile\n"
@@ -382,7 +382,7 @@ def open_add_or_fix_modal(client, trigger_id, user_id, is_add: bool):
             "type": "input",
             "block_id": "keywords",
             "element": {"type": "plain_text_input", "action_id": "input", "initial_value": user_info["keywords"]},
-            "label": {"type": "plain_text", "text": "Keywords (comma-separated, e.g., visualization, HCI, design)"}
+            "label": {"type": "plain_text", "text": "Keywords (comma-separated, be specific, e.g., visualization, design)"}
         },
         {
             "type": "input",
