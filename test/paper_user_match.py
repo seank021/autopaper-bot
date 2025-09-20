@@ -1,15 +1,15 @@
 import sys
 import os
 import json
-from sentence_transformers import CrossEncoder
+# from sentence_transformers import CrossEncoder
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.link_utils import process_link_download
 from utils.pdf_utils import extract_text_from_pdf
 from utils.summarizer import summarize_text
 from utils.embedding_utils import get_embedding, cosine_similarity
 
-CE_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
-ce_model = CrossEncoder(CE_MODEL_NAME)
+# CE_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+# ce_model = CrossEncoder(CE_MODEL_NAME)
 
 # Test DB versions (tmember1.json ~ tmember6.json)
 TMEMBER_VERSIONS = [1, 2, 3, 4, 5, 6]
@@ -87,15 +87,15 @@ def local_match_top_n_members(
     ]
 
     # CrossEncoder rerank
-    pairs = []
-    for uid in filtered_users:
-        profile = member_db.get(uid, {})
-        profile_text = f"Keywords: {', '.join(profile.get('keywords', []))} | Interests: {profile.get('interests', '')}"
-        pairs.append((summary_text, profile_text))
+    # pairs = []
+    # for uid in filtered_users:
+    #     profile = member_db.get(uid, {})
+    #     profile_text = f"Keywords: {', '.join(profile.get('keywords', []))} | Interests: {profile.get('interests', '')}"
+    #     pairs.append((summary_text, profile_text))
 
-    if pairs:
-        scores = ce_model.predict(pairs)
-        filtered_users = [uid for uid, _ in sorted(zip(filtered_users, scores), key=lambda x: x[1], reverse=True)][:top_n]
+    # if pairs:
+    #     scores = ce_model.predict(pairs)
+    #     filtered_users = [uid for uid, _ in sorted(zip(filtered_users, scores), key=lambda x: x[1], reverse=True)][:top_n]
 
     return (filtered_users, similarity_scores) if return_similarities else filtered_users
 

@@ -3,7 +3,7 @@ import json
 import sys
 from openai import OpenAI
 from dotenv import load_dotenv
-from sentence_transformers import CrossEncoder
+# from sentence_transformers import CrossEncoder
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding, cosine_similarity
 from utils.supabase_db import get_all_members
@@ -11,18 +11,18 @@ from utils.supabase_db import get_all_members
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-_ce_model = None
+# _ce_model = None
 
-def get_ce_model():
-    global _ce_model
-    if _ce_model is None:
-        from sentence_transformers import CrossEncoder
-        _ce_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-    return _ce_model
+# def get_ce_model():
+#     global _ce_model
+#     if _ce_model is None:
+#         from sentence_transformers import CrossEncoder
+#         _ce_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+#     return _ce_model
 
-def rerank(pairs):
-    model = get_ce_model()
-    return model.predict(pairs)
+# def rerank(pairs):
+#     model = get_ce_model()
+#     return model.predict(pairs)
 
 # Helper function to compute weighted similarity
 def compute_weighted_similarity(summary_vec, user_vecs, weights):
@@ -63,16 +63,16 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
     top_users = [top_users[0]] + [user for user in top_users[1:] if similarity_scores[user] >= threshold]
 
     # Rerank with CrossEncoder
-    members_dict = {m["slack_id"]: m for m in members if "slack_id" in m}
-    pairs = []
-    for uid in top_users:
-        profile = members_dict.get(uid, {})
-        profile_text = f"Keywords: {', '.join(profile.get('keywords', []))} | Interests: {profile.get('interests', '')}"
-        pairs.append((summary_text, profile_text))
+    # members_dict = {m["slack_id"]: m for m in members if "slack_id" in m}
+    # pairs = []
+    # for uid in top_users:
+    #     profile = members_dict.get(uid, {})
+    #     profile_text = f"Keywords: {', '.join(profile.get('keywords', []))} | Interests: {profile.get('interests', '')}"
+    #     pairs.append((summary_text, profile_text))
 
-    if pairs:
-        scores = rerank(pairs)
-        top_users = [uid for uid, _ in sorted(zip(top_users, scores), key=lambda x: x[1], reverse=True)][:top_n]
+    # if pairs:
+    #     scores = rerank(pairs)
+    #     top_users = [uid for uid, _ in sorted(zip(top_users, scores), key=lambda x: x[1], reverse=True)][:top_n]
 
     return (top_users, similarity_scores) if return_similarities else top_users
 

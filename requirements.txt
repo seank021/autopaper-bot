@@ -9,4 +9,3 @@ beautifulsoup4
 gunicorn
 supabase
 numpy
-sentence-transformers
