@@ -2,19 +2,14 @@
 This project is designed to automate the process of summarizing research papers and matching the most relevant users based on their interests, in the Slack workspace.
 
 ## Features
-- Summarizes research papers using OpenAI's GPT-4.1-nano model.
+- Summarizes research papers using OpenAI's GPT-4o-mini model.
 - Matches users with similar interests based on their paper summaries.
 - QnA functionality to answer questions about the papers by tagging the bot in Slack.
 
 ## Database
 - User data is stored in database.py. The Slack user ID is open since it is open publicly to other people in the Slack workspace.
 - Paper metadata is stored in Supabase.
-- This project is deployed on Google Cloud Run. So when you change the code and want to redeploy, run the following commands:
-    ```
-    gcloud builds submit --tag gcr.io/striking-goal-472721-a9/autopaper
-    
-    gcloud run deploy autopaper --image gcr.io/striking-goal-472721-a9/autopaper --platform managed --region asia-northeast3 --allow-unauthenticated --memory 1Gi --cpu 1 --min-instances 1 --max-instances 2
-    ```
+- This project is deployed on Render with free plan.
 
 ## Flow
 1. User uploads a research paper link in the Slack channel. (only arXiv papers are supported for now)

@@ -104,7 +104,7 @@ def get_reason_for_tagging(user_id, summary_text, member_db=None):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4.1-nano",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}]
         )
         return response.choices[0].message.content.strip()

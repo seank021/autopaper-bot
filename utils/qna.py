@@ -32,7 +32,7 @@ def answer_question(context: str, question: str, thread_hash: str, max_history: 
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4.1-nano",
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=250,
         )
