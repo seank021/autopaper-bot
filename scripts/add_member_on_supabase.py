@@ -5,15 +5,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding
 from utils.supabase_db import insert_member
 from database.member import MEMBER_DB
-from database.test_member import TEST_MEMBER_DB
-
-TEST = False
 
 def main():
-    dir = "test_user_embeddings" if TEST else "user_embeddings"
+    dir = "user_embeddings"
     os.makedirs(dir, exist_ok=True)
 
-    member_db = TEST_MEMBER_DB if TEST else MEMBER_DB
+    member_db = MEMBER_DB
 
     for slack_id, info in member_db.items():
         print(f"[→] Processing {slack_id} ({info['name']})")
