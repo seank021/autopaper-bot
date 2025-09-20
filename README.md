@@ -9,7 +9,12 @@ This project is designed to automate the process of summarizing research papers 
 ## Database
 - User data is stored in database.py. The Slack user ID is open since it is open publicly to other people in the Slack workspace.
 - Paper metadata is stored in Supabase.
-- This project is deployed on Render with a free plan.
+- This project is deployed on Google Cloud Run. So when you change the code and want to redeploy, run the following commands:
+    ```
+    gcloud builds submit --tag gcr.io/striking-goal-472721-a9/autopaper
+    
+    gcloud run deploy autopaper --image gcr.io/striking-goal-472721-a9/autopaper --platform managed --region asia-northeast3 --allow-unauthenticated --memory 1Gi --cpu 1 --min-instances 1 --max-instances 2
+    ```
 
 ## Flow
 1. User uploads a research paper link in the Slack channel. (only arXiv papers are supported for now)
@@ -21,17 +26,9 @@ This project is designed to automate the process of summarizing research papers 
 
 ## Repository Structure
 - `app.py`: Main application file that runs the bot and handles Slack events.
-- `database/`
-    - `member.py`: Contains the lab member data including their Slack user IDs, keywords, and interests.
-    - `project.py`: (TODO) Contains the project data including project channel Slack IDs, keywords, and descriptions.
-- `scripts/`
-    - `add_member_on_supabase.py`: Script to add lab members to Supabase. It generates embeddings for each member and stores them in Supabase. You **should** run this script to construct the initial user database on Supabase.
-    - `embed_users.py`: Script to embed user interests for matching. It containts only project and channel joiners. You **should** run this script after updating `database.py` if you plan to use user embeddings for matching interests.
-- `user_embeddings/`: Contains the embeddings of each user generated from the `embed_users.py` script.
 - `utils/`
     - `embedding_utils.py`: Contains functions to embed user database.
-    - `interest_matcher.py`: Contains functions to match users based on their interests.
-        - LLM matcher vs. Embedding matcher: The LLM matcher uses OpenAI's GPT-4.1-nano model to match users based on their interests, while the embedding matcher uses pre-computed embeddings of user interests for faster matching. Currently, the embedding matcher is being used.
+    - `member_tagger.py`: Contains functions to match users based on their interests.
     - `supabase_db.py`: Contains functions to insert and get paper metadata from Supabase.
     - `path_utils.py`: Contains functions to handle temp paths and file management.
     - `pdf_utils.py`: Contains functions to extract text from PDF files.
@@ -40,6 +37,11 @@ This project is designed to automate the process of summarizing research papers 
     - `qna.py`: Contains functions to answer questions about the papers using OpenAI's API.
     - `user_info.py`: Contains functions to get user information from Slack API.
 - `requirements.txt`: Contains the dependencies required to run the bot.
+- `database/` - Not using for deploy version, since we're using Supabase.
+    - `member.py`: Contains the lab member data including their Slack user IDs, keywords, and interests.
+    - `project.py`: (TODO) Contains the project data including project channel Slack IDs, keywords, and descriptions.
+- `scripts/`
+    - `add_member_on_supabase.py`: Script to add lab members to Supabase.
+    - `embed_users.py`: Script to embed user interests for matching.
+- `user_embeddings/`: Contains the embeddings of each user generated from the `embed_users.py` script.
 - `test/`: Contains test files for the bot.
-    - Especially, you can run `test/paper_user_match.py` to test the user matching functionality, then compare the results `test/paper_user_match_results.json` with the expected results in `test/paper_user_match_answers.json`.
-    - When this test is run, `test_user_embeddings` folder selected for the interest matcher.
