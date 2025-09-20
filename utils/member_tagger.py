@@ -11,8 +11,18 @@ from utils.supabase_db import get_all_members
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-CE_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
-ce_model = CrossEncoder(CE_MODEL_NAME)
+_ce_model = None
+
+def get_ce_model():
+    global _ce_model
+    if _ce_model is None:
+        from sentence_transformers import CrossEncoder
+        _ce_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+    return _ce_model
+
+def rerank(pairs):
+    model = get_ce_model()
+    return model.predict(pairs)
 
 # Helper function to compute weighted similarity
 def compute_weighted_similarity(summary_vec, user_vecs, weights):
@@ -61,7 +71,7 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
         pairs.append((summary_text, profile_text))
 
     if pairs:
-        scores = ce_model.predict(pairs)
+        scores = rerank(pairs)
         top_users = [uid for uid, _ in sorted(zip(top_users, scores), key=lambda x: x[1], reverse=True)][:top_n]
 
     return (top_users, similarity_scores) if return_similarities else top_users
