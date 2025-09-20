@@ -2,3 +2,6 @@
 __pycache__
 .DS_Store
 temp/
+google-cloud-cli-499.0.0-darwin-arm.tar.gz
+google-cloud-sdk/
+source ~/
