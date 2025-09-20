@@ -8,7 +8,7 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_embedding(text: str) -> list:
     response = client.embeddings.create(
-        model="text-embedding-3-small",
+        model="text-embedding-3-large",
         input=text
     )
     return response.data[0].embedding

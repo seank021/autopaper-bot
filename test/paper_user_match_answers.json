@@ -1,7 +1,7 @@
 [
     {
         "paper": "https://arxiv.org/abs/2503.23315",
-        "matched_users": ["kihoon"]
+        "matched_users": ["U0332SAEU6P"]
     },
     {
         "paper": "https://arxiv.org/abs/2506.23678",
@@ -16,12 +16,8 @@
         "matched_users": ["U8JLRRXPB"]
     },
     {
-        "paper": "https://arxiv.org/abs/2409.12538",
-        "matched_users": ["hyungyu.shin"]
-    },
-    {
         "paper": "https://arxiv.org/abs/2507.13524",
-        "matched_users": ["hyunwookim"]
+        "matched_users": ["U4D956LSC"]
     },
     {
         "paper": "https://arxiv.org/abs/2507.07935",
@@ -29,10 +25,42 @@
     },
     {
         "paper": "https://arxiv.org/abs/2507.22358",
-        "matched_users": ["kihoon"]
+        "matched_users": ["U0332SAEU6P"]
     },
     {
         "paper": "https://arxiv.org/abs/2508.00723",
         "matched_users": ["U03KJ9NJ1FU"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2406.12465",
+        "matched_users": ["U090X2M5P8B"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2507.21071",
+        "matched_users": ["U03492H28Q3"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2508.13141",
+        "matched_users": ["U8JLRRXPB"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2508.14395",
+        "matched_users": ["U01HB3S0UM8"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2508.14160",
+        "matched_users": ["U06AJGGHZ5L"]
+    },
+    {
+        "paper": "https://arxiv.org/pdf/2509.08010",
+        "matched_users": ["U03KJ9NJ1FU", "U086M1LK65R"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2504.10445",
+        "matched_users": ["U07B3LG8M5E", "UUQ287SEQ", "U8JLRRXPB"]
+    },
+    {
+        "paper": "https://arxiv.org/abs/2509.13348",
+        "matched_users": ["U8JLRRXPB", "U07PC9NTTNK"]
     }
 ]

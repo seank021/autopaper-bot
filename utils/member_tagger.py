@@ -3,6 +3,7 @@ import json
 import sys
 from openai import OpenAI
 from dotenv import load_dotenv
+from sentence_transformers import CrossEncoder
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding, cosine_similarity
 from utils.supabase_db import get_all_members
@@ -10,10 +11,12 @@ from utils.supabase_db import get_all_members
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+CE_MODEL_NAME = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+ce_model = CrossEncoder(CE_MODEL_NAME)
+
 # Helper function to compute weighted similarity
 def compute_weighted_similarity(summary_vec, user_vecs, weights):
-    weighted_sum = 0.0
-    total_weight = 0.0
+    weighted_sum, total_weight = 0.0, 0.0
     for field, weight in weights.items():
         if field in user_vecs:
             sim = cosine_similarity(summary_vec, user_vecs[field])
@@ -22,9 +25,9 @@ def compute_weighted_similarity(summary_vec, user_vecs, weights):
     return round(weighted_sum / total_weight, 4) if total_weight > 0 else 0.0
 
 # Match top N members based on summary text - Currently, it matches one top member
-def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5):
+def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5): # threshold set experimentally
     if weights is None:
-        weights = {"keywords": 0.3, "interests": 0.7} # Default weights
+        weights = {"keywords": 0.8, "interests": 0.2} # set experimentally
 
     summary_vec = get_embedding(summary_text)
     similarity_scores = {}
@@ -41,13 +44,25 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
         sim_score = compute_weighted_similarity(summary_vec, embedding, weights)
         similarity_scores[slack_id] = sim_score
 
-    sorted_users = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)
+    sorted_users = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)    
     top_users = [user_id for user_id, _ in sorted_users[:top_n]]
-    # If the top user's similarity is below 0.35, return empty list
+    if not top_users:
+        return ([], similarity_scores) if return_similarities else []
     if similarity_scores[top_users[0]] < 0.35:
         return ([], similarity_scores) if return_similarities else []
-    # The top user is always included unless it has very low similarity, and the other users are filtered by the threshold
     top_users = [top_users[0]] + [user for user in top_users[1:] if similarity_scores[user] >= threshold]
+
+    # Rerank with CrossEncoder
+    members_dict = {m["slack_id"]: m for m in members if "slack_id" in m}
+    pairs = []
+    for uid in top_users:
+        profile = members_dict.get(uid, {})
+        profile_text = f"Keywords: {', '.join(profile.get('keywords', []))} | Interests: {profile.get('interests', '')}"
+        pairs.append((summary_text, profile_text))
+
+    if pairs:
+        scores = ce_model.predict(pairs)
+        top_users = [uid for uid, _ in sorted(zip(top_users, scores), key=lambda x: x[1], reverse=True)][:top_n]
 
     return (top_users, similarity_scores) if return_similarities else top_users
 
