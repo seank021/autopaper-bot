@@ -485,6 +485,7 @@ def slack_events():
         payload = request.get_json()
         if "challenge" in payload:
             return payload["challenge"], 200
+    return handler.handle(request)
 
 # === temp 정리 트리거 (선택사항) ===
 @flask_app.route("/cleanup", methods=["POST"])
