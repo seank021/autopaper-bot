@@ -481,10 +481,10 @@ def handle_file_shared_events(body, logger):
 # === 이벤트 핸들러 ===
 @flask_app.route("/slack/events", methods=["POST"])
 def slack_events():
-    payload = request.get_json()
-    if payload and payload.get("type") == "url_verification":
-        return jsonify({"challenge": payload["challenge"]})
-    return handler.handle(request)
+    if request.headers.get("Content-Type") == "application/json":
+        payload = request.get_json()
+        if "challenge" in payload:
+            return payload["challenge"], 200
 
 # === temp 정리 트리거 (선택사항) ===
 @flask_app.route("/cleanup", methods=["POST"])
