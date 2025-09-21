@@ -24,7 +24,7 @@ def answer_question(context: str, question: str, thread_hash: str, max_history: 
     messages.insert(0, {
         "role": "system",
         "content": (
-            "You are a helpful academic assistant. Keep your answers concise and to the point, optimized for mobile reading. "
+            "You are a helpful academic assistant. Keep your answers concise and to the point, optimized for mobile reading. Answer in maximum 70 words. "
             "Only include the essential details unless further explanation is requested. "
             "The following is the content of the research paper you will refer to:\n\n" + context.strip()
         )
@@ -34,7 +34,6 @@ def answer_question(context: str, question: str, thread_hash: str, max_history: 
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=messages,
-            max_tokens=250,
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
