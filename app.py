@@ -404,7 +404,9 @@ def ask_remove_confirmation(client, user_id, prefer_channel=None):
     if prefer_channel and is_dm_channel(client, prefer_channel):
         target = prefer_channel
     else:
-        target = post_dm(client, user_id, text="", blocks=[], prefer_channel=None)  # DM 열기
+        res = client.conversations_open(users=user_id)
+        target = res["channel"]["id"]
+
     if not target:
         return  # DM 불가 시 조용히 종료하거나 채널 안내 추가 가능
 
