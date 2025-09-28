@@ -2,14 +2,11 @@ import os
 import sys
 import importlib.util
 import json
-from dotenv import load_dotenv
 import openai
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding
 
-load_dotenv()
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 
 def load_module_from_path(name, path):
     spec = importlib.util.spec_from_file_location(name, path)

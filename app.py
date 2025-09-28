@@ -1,7 +1,6 @@
 from slack_bolt import App
 from slack_bolt.adapter.flask import SlackRequestHandler
 from flask import Flask, request, jsonify
-from dotenv import load_dotenv
 import os
 import requests
 import re
@@ -19,8 +18,6 @@ from utils.supabase_db import insert_metadata, get_metadata, insert_log, get_mem
 from utils.embedding_utils import get_embedding
 from utils.qna import answer_question
 from utils.user_info import get_user_info
-
-load_dotenv()
 
 # === Slack app setup ===
 app = App(token=os.getenv("SLACK_BOT_TOKEN"), signing_secret=os.getenv("SLACK_SIGNING_SECRET"))
@@ -486,6 +483,11 @@ def slack_events():
         if "challenge" in payload:
             return payload["challenge"], 200
     return handler.handle(request)
+
+# === 루트 라우터 === 
+@flask_app.route("/", methods=["GET"])
+def home():
+    return "Hello from AutoPaper Bot! 🚀"
 
 # === temp 정리 트리거 (선택사항) ===
 @flask_app.route("/cleanup", methods=["POST"])

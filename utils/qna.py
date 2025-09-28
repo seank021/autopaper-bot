@@ -1,9 +1,7 @@
 import os
 from utils.supabase_db import get_logs
 import openai
-from dotenv import load_dotenv
 
-load_dotenv()
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def answer_question(context: str, question: str, thread_hash: str, max_history: int = 10) -> str:

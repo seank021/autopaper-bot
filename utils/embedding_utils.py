@@ -1,9 +1,7 @@
 import openai
 import numpy as np
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_embedding(text: str) -> list:

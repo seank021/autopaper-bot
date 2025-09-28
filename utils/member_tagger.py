@@ -2,13 +2,11 @@ import os
 import json
 import sys
 from openai import OpenAI
-from dotenv import load_dotenv
 # from sentence_transformers import CrossEncoder
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.embedding_utils import get_embedding, cosine_similarity
 from utils.supabase_db import get_all_members
 
-load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # _ce_model = None
