@@ -314,7 +314,7 @@ def slash_members(ack, body, client, logger):
     user_id = body["user_id"]
     channel_id = body.get("channel_id")
     in_dm = is_dm_channel(client, channel_id)
-    ack() if in_dm else ack("Proceeding in DM!")
+    ack() if in_dm else ack("Proceeding in DM! Might take some time...")
     post_dm(client, user_id,
         text="*🧑‍🔬 AutoPaper Members*\n" + render_member_list(),
         prefer_channel=channel_id
