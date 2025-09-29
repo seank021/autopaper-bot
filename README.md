@@ -9,7 +9,7 @@ This project is designed to automate the process of summarizing research papers 
 ## Database
 - User data is stored in database.py. The Slack user ID is open since it is open publicly to other people in the Slack workspace.
 - Paper metadata is stored in Supabase.
-- This project is deployed on Render with free plan.
+- This project is deployed on fly.io.
 
 ## Flow
 1. User uploads a research paper link in the Slack channel. (only arXiv papers are supported for now)

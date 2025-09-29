@@ -363,7 +363,7 @@ def open_add_or_fix_modal(client, trigger_id, user_id, is_add: bool):
             "type": "input",
             "block_id": "slack_id",
             "element": {"type": "plain_text_input", "action_id": "input", "initial_value": user_info["slack_id"]},
-            "label": {"type": "plain_text", "text": "Slack ID (e.g., U12345678)"}
+            "label": {"type": "plain_text", "text": "Slack ID (In PC Slack, 'Profile' → '⋮' → 'Copy member ID') (e.g., U12345678)"}
         })
     else:
         blocks.append({"type":"section","text":{"type":"mrkdwn","text":f"*Slack ID:* `{user_info['slack_id']}`"}})
