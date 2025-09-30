@@ -56,7 +56,7 @@ def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities
     top_users = [user_id for user_id, _ in sorted_users[:top_n]]
     if not top_users:
         return ([], similarity_scores) if return_similarities else []
-    if similarity_scores[top_users[0]] < 0.35:
+    if similarity_scores[top_users[0]] < 0.2:
         return ([], similarity_scores) if return_similarities else []
     top_users = [top_users[0]] + [user for user in top_users[1:] if similarity_scores[user] >= threshold]
 
