@@ -240,7 +240,7 @@ def handle_mention(event, say, client, logger):
     insert_log(thread_hash, "user", command, user_id=event.get("user"), timestamp=timestamp)
     insert_log(thread_hash, "assistant", answer, timestamp=timestamp + 0.001)
 
-    say(text=f"*Q: {command}*\n\n*A:* {answer}", thread_ts=thread_ts)
+    say(text=f"_Q: {command}_\n*A:* {answer}", thread_ts=thread_ts)
 
 # === Actions: 채널 → DM 이동 버튼 ===
 @app.action("goto_dm_for_mgmt")
