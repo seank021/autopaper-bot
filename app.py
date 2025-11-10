@@ -10,7 +10,7 @@ from slack_sdk.errors import SlackApiError
 
 # === Custom utility modules ===
 from utils.pdf_utils import extract_text_from_pdf
-from utils.summarizer import summarize_text, extract_keywords
+from utils.summarizer import summarize_text, summarize_for_matching, extract_keywords
 from utils.member_tagger import match_top_n_members, get_reason_for_tagging
 from utils.link_utils import process_link_download
 from utils.path_utils import get_pdf_path_from_thread, get_thread_hash
@@ -157,16 +157,26 @@ def post_summary_reply(client, channel, thread_ts, text):
         thread_ts=thread_ts,
         text="Processing your document and generating response..."
     )
-    summary = summarize_text(text)
+    summary = summarize_text(text) # for showing to users
+    matching_summary = summarize_for_matching(text) # for member matching
+
     keywords = extract_keywords(text) # comma separated list of keywords
+    if not keywords:
+        keywords = []
+    elif isinstance(keywords, str):
+        keywords = [kw.strip() for kw in keywords.split(",") if kw.strip()]
     keyword_tags = ' '.join([f"#{kw.replace(' ', '_')}" for kw in keywords])
 
-    matched_users, sim_dict = match_top_n_members(summary, top_n=3, return_similarities=True, threshold=0.5)
+    tagger_input = matching_summary
+    if keywords:
+        tagger_input += "\n\nPaper Keywords: " + ", ".join(keywords)
+
+    matched_users, sim_dict = match_top_n_members(tagger_input, top_n=3, return_similarities=True, threshold=0.5)
     member_db = {m["slack_id"]: m for m in get_all_members()}
 
     user_reasons = []
     for uid in matched_users:
-        reason = get_reason_for_tagging(uid, summary, member_db=member_db)
+        reason = get_reason_for_tagging(uid, matching_summary, member_db=member_db)
         user_reasons.append(f"• <@{uid}>: {reason}")
 
     summary_text = f"*[AutoPaper Summary]*\n{summary}"

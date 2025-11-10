@@ -1,81 +1,239 @@
+########## Mamber Tagger based on LLM ##########
 import os
 import json
 import sys
 from openai import OpenAI
-# from sentence_transformers import CrossEncoder
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from utils.embedding_utils import get_embedding, cosine_similarity
 from utils.supabase_db import get_all_members
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# _ce_model = None
+def match_top_n_members(
+    summary_text,
+    top_n=3,
+    weights=None, # 인터페이스 유지용 (사용 안 함)
+    return_similarities=False,
+    threshold=0.6 # LLM 점수 기준 임계값
+):
+    """
+    LLM만 사용해서, 페이퍼 요약(summary_text)와 멤버 프로필을 기반으로
+    이 페이퍼에 가장 잘 맞는 멤버의 slack_id 리스트와 LLM 기반 score를 반환.
+    """
+    members = get_all_members()
+    if not members:
+        return ([], {}) if return_similarities else []
 
-# def get_ce_model():
-#     global _ce_model
-#     if _ce_model is None:
-#         from sentence_transformers import CrossEncoder
-#         _ce_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-#     return _ce_model
+    # 유효한 멤버 정보 정리
+    member_profiles = []
+    valid_slack_ids = set()
 
-# def rerank(pairs):
-#     model = get_ce_model()
-#     return model.predict(pairs)
-
-# Helper function to compute weighted similarity
-def compute_weighted_similarity(summary_vec, user_vecs, weights):
-    weighted_sum, total_weight = 0.0, 0.0
-    for field, weight in weights.items():
-        if field in user_vecs:
-            sim = cosine_similarity(summary_vec, user_vecs[field])
-            weighted_sum += weight * sim
-            total_weight += weight
-    return round(weighted_sum / total_weight, 4) if total_weight > 0 else 0.0
-
-# Match top N members based on summary text - Currently, it matches one top member
-def match_top_n_members(summary_text, top_n=3, weights=None, return_similarities=False, threshold=0.5): # threshold set experimentally
-    if weights is None:
-        weights = {"keywords": 0.8, "interests": 0.2} # set experimentally
-
-    summary_vec = get_embedding(summary_text)
-    similarity_scores = {}
-
-    members = get_all_members() # From Supabase
-
-    for member in members:
-        slack_id = member.get("slack_id")
-        embedding = member.get("embedding", {}) # dict
-
-        if not slack_id or not embedding:
+    for m in members:
+        slack_id = m.get("slack_id")
+        if not slack_id:
             continue
 
-        sim_score = compute_weighted_similarity(summary_vec, embedding, weights)
-        similarity_scores[slack_id] = sim_score
+        valid_slack_ids.add(slack_id)
+        member_profiles.append({
+            "slack_id": slack_id,
+            "name": m.get("name") or m.get("real_name") or "",
+            "keywords": m.get("keywords", []),
+            "interests": m.get("interests", ""),
+        })
 
-    sorted_users = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)    
-    top_users = [user_id for user_id, _ in sorted_users[:top_n]]
-    if not top_users:
-        return ([], similarity_scores) if return_similarities else []
-    if similarity_scores[top_users[0]] < 0.2:
-        return ([], similarity_scores) if return_similarities else []
-    top_users = [top_users[0]] + [user for user in top_users[1:] if similarity_scores[user] >= threshold]
+    if not member_profiles:
+        return ([], {}) if return_similarities else []
 
-    # Rerank with CrossEncoder
-    # members_dict = {m["slack_id"]: m for m in members if "slack_id" in m}
-    # pairs = []
-    # for uid in top_users:
-    #     profile = members_dict.get(uid, {})
-    #     profile_text = f"Keywords: {', '.join(profile.get('keywords', []))} | Interests: {profile.get('interests', '')}"
-    #     pairs.append((summary_text, profile_text))
+    # LLM에게 넘길 멤버 리스트를 문자열로 정리
+    member_desc_lines = []
+    for profile in member_profiles:
+        line = (
+            f"- slack_id: {profile['slack_id']}\n"
+            f"  name: {profile['name']}\n"
+            f"  keywords: {', '.join(profile['keywords']) if profile['keywords'] else 'None'}\n"
+            f"  interests: {profile['interests'] or 'None'}"
+        )
+        member_desc_lines.append(line)
 
-    # if pairs:
-    #     scores = rerank(pairs)
-    #     top_users = [uid for uid, _ in sorted(zip(top_users, scores), key=lambda x: x[1], reverse=True)][:top_n]
+    members_block = "\n\n".join(member_desc_lines)
 
-    return (top_users, similarity_scores) if return_similarities else top_users
+    # LLM 프롬프트
+    system_prompt = """
+    You are an assistant for an HCI research lab.
+    Your task is to select lab members who are most likely to be interested in a given paper
+    and assign a relevance score to each selected member.
 
-# Reason for tagging this user
+    You are given:
+    1) A short summary of a research paper.
+    2) A list of lab members with their slack_id, keywords and interests.
+
+    Your goal is HIGH PRECISION:
+    - It is BETTER to select fewer members than too many.
+    - Only select members whose research interests are DIRECTLY related to the main topic of the paper.
+    - Generic overlap like "LLM", "AI", or "reasoning" alone is NOT enough for a strong match.
+    - Prefer members whose keywords and interests match the paper's SPECIFIC domain, modality, task, or method
+      (e.g., education, evaluation, creativity support, video, multimodal, alignment, etc.).
+
+    Scoring guideline (0.0 to 1.0):
+    - 0.9–1.0: extremely strong and direct match
+        (same domain + same type of task/method; clearly ideal reviewer/reader)
+    - 0.7–0.89: strong match
+        (clear overlap in domain OR method, but not perfect)
+    - 0.5–0.69: moderate / borderline match
+        (some overlap, but either domain or method is not well aligned)
+    - 0.3–0.49: weak match
+        (only generic AI/LLM overlap or very indirect connection; usually DO NOT select)
+    - below 0.3: very weak or irrelevant (DO NOT select)
+
+    Selection rules:
+    - Choose up to N members who are clearly relevant to the paper.
+    - If only 1 person looks clearly relevant, you may return just 1.
+    - If relevance is weak for almost all members, return an empty list.
+    - Do NOT "force" the list to have many members. Use low scores (<= 0.4) if unsure.
+
+    Output format:
+    - You MUST respond with a JSON object ONLY.
+    - The JSON must have the following schema:
+        {
+            "members": [
+                { "slack_id": "U123", "score": 0.92 },
+                { "slack_id": "U456", "score": 0.81 }
+            ]
+        }
+    - "members" must be a list.
+    - Each "score" must be a number between 0.0 and 1.0.
+    - Only use slack_ids that appear in the member list provided.
+    - DO NOT make up or hallucinate new slack_ids.
+    """.strip()
+
+    # Few-shot 예시 포함 프롬프트
+    user_prompt = f"""
+    Below is an example of how you should think:
+
+    [Example]
+    Paper Summary:
+    "We design a system that helps teachers use LLMs in classrooms for formative feedback and
+    metacognitive support. The system focuses on K-12 education and learning analytics."
+
+    Members:
+    - A: keywords: evaluation, reasoning; interests: evaluation of general LLM reasoning.
+    - B: keywords: education, learning, metacognition; interests: AI in education and metacognition.
+    - C: keywords: creativity, art; interests: creativity support tools for artists.
+
+    Good output JSON:
+    {{
+        "members": [
+            {{ "slack_id": "B", "score": 0.88 }}
+        ]
+    }}
+    (Only B is selected. A and C are not selected because they are too generic or off-domain.)
+
+    ----------------------------------------------
+    Now do the real task.
+
+    # Paper Summary
+    {summary_text}
+
+    # Members (valid candidates)
+    {members_block}
+
+    # Selection Specification
+    - Maximum number of members to select: {top_n}
+    - Only include members who are clearly and directly relevant to the paper.
+    - If relevance is weak for almost all members, select at most 1 or return an empty list.
+
+    Respond with JSON ONLY, following this exact schema:
+    {{
+        "members": [
+            {{ "slack_id": "UXXXXXXX", "score": 0.85 }},
+            {{ "slack_id": "UYYYYYYY", "score": 0.73 }}
+        ]
+    }}
+    """.strip()
+
+    max_retries = 3
+    chosen_members = [] # list of (slack_id, score)
+
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                response_format={"type": "json_object"},
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+            )
+            content = response.choices[0].message.content
+            data = json.loads(content)
+
+            members_field = data.get("members", [])
+            if not isinstance(members_field, list):
+                raise ValueError("members is not a list")
+
+            tmp_list = []
+            for item in members_field:
+                if not isinstance(item, dict):
+                    continue
+                sid = item.get("slack_id")
+                score = item.get("score")
+
+                # slack_id 체크
+                if not isinstance(sid, str):
+                    continue
+                sid = sid.strip()
+                if sid not in valid_slack_ids:
+                    continue
+
+                # score 체크
+                try:
+                    score_val = float(score)
+                except (TypeError, ValueError):
+                    continue
+                if not (0.0 <= score_val <= 1.0):
+                    continue
+
+                tmp_list.append((sid, score_val))
+
+            if tmp_list:
+                # score 기준으로 정렬 (내림차순)
+                tmp_list.sort(key=lambda x: x[1], reverse=True)
+
+                # threshold 이상인 것만, top_n까지
+                filtered = [(sid, sc) for sid, sc in tmp_list if sc >= threshold][:top_n]
+
+                # 아무도 threshold를 못 넘으면, 정말 제일 높은 사람도 0.6 이하라면 "관계가 약하다"로 보고 아무도 안 뽑기
+                if not filtered:
+                    # 가장 높은 점수가 0.5 이상이면 1명만 fallback으로 뽑고,
+                    # 그마저도 낮으면 완전 빈 리스트 유지
+                    best_sid, best_score = tmp_list[0]
+                    if best_score >= 0.5:
+                        filtered = [(best_sid, best_score)]
+
+                chosen_members = filtered
+                break
+            # 아무것도 없으면 retry (최종적으로 없으면 빈 리스트)
+        except Exception:
+            if attempt == max_retries - 1:
+                chosen_members = []
+            continue
+
+    top_users = [sid for sid, _ in chosen_members]
+
+    # similarity_scores: LLM이 준 score 그대로 반영, 선택 안 된 멤버는 0.0
+    similarity_scores = {sid: 0.0 for sid in valid_slack_ids}
+    for sid, sc in chosen_members:
+        similarity_scores[sid] = round(float(sc), 4)
+
+    if return_similarities:
+        return top_users, similarity_scores
+    return top_users
+
+
 def get_reason_for_tagging(user_id, summary_text, member_db=None):
+    if member_db is None:
+        members = get_all_members()
+        member_db = {m["slack_id"]: m for m in members if m.get("slack_id")}
+
     if user_id not in member_db:
         return "User not found in the database."
     

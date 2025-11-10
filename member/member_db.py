@@ -1,149 +1,152 @@
-# Narrative Style Interests
-
 MEMBER_DB = {
     "U01HB3S0UM8": {
         "name": "Bekzat",
         "keywords": ["video", "planning", "learning", "creativity", "CST"],
-        "interests": "Bekzat is fascinated by how humans and AI can collaborate in creative and learning domains, with a focus on video and planning."
+        "interests": "Research on video-based learning, planning support, and creativity support tools (CST) for learners."
+    },
+    "U01HNLUPF4J": {
+        "name": "DaEun",
+        "keywords": ["creativity supporting tools", "storytelling", "design exploration", "ideation", "video"],
+        "interests": "Research on generative AI systems for creativity support, focusing on reference-based idea expansion across storytelling and design processes."
     },
     "U025KUM8NSY": {
         "name": "Junho",
-        "keywords": ["Evaluation", "Fairness"],
-        "interests": "Junho’s work centers on human-centered evaluation of large language models, aiming to design fair and practical methods that go beyond static benchmarks."
+        "keywords": ["Cultural Adaptation", "Cross-lingual", "Human Evaluation", "Fairness"],
+        "interests": "Research on cultural and cross-lingual adaptation of language models and human-centered evaluation of AI."
     },
     "U0332SAEU6P": {
         "name": "Kihoon Son",
         "keywords": ["Design", "Creativity", "Automation", "Knowledge capture"],
-        "interests": "Kihoon is interested in capturing implicit human knowledge within workflows and building generative agent frameworks to reuse that knowledge in creative design contexts."
+        "interests": "Designing automated systems that capture human knowledge and support creativity in design workflows."
     },
     "U03492H28Q3": {
         "name": "Yoonsu",
         "keywords": ["Proactive Support", "Education", "Alignment"],
-        "interests": "Yoonsu studies human-LLM interaction, focusing on proactive support and educational applications that enable people to collaborate effectively with AI."
+        "interests": "Proactive LLM support for education and aligned human–AI collaboration in learning environments."
     },
     "U03KJ9NJ1FU": {
         "name": "Yeon Su",
         "keywords": ["reliance", "reliability", "evaluation", "human cognition"],
-        "interests": "Yeon Su explores how humans perceive and rely on AI, studying how trust, explanations, and transparency influence user cognition and evaluation of AI systems."
+        "interests": "How people rely on AI systems, and how reliability and explanations affect human cognition and evaluation."
     },
     "U05BC4D4STU": {
         "name": "Hyewon",
         "keywords": ["creativity", "interface", "design"],
-        "interests": "Hyewon is motivated by the challenge of designing novel systems for Human-AI collaboration, especially in creativity and interface design."
+        "interests": "Interface and interaction design for creativity support tools and Human–AI co-creation."
     },
     "U06AJGGHZ5L": {
         "name": "Daeheon",
         "keywords": ["design", "VLM", "multimodal", "generative", "automation", "productivity", "labor", "creativity"],
-        "interests": "Daeheon investigates AI-based design and multimodal models, with a particular interest in how generative systems impact productivity, labor, and creativity."
+        "interests": "Multimodal and VLM-based generative systems for design, focusing on automation, productivity, labor, and creativity."
     },
     "U06FXPDH4TF": {
         "name": "Jaesang",
-        "keywords": ["multimodal", "alignment", "multi-turn", "post-training", "test-time scaling", "reinforcement learning", "reasoning"],
-        "interests": "Jaesang focuses on developing human-aligned AI, exploring multimodal reasoning, reinforcement learning, and multi-turn interaction design."
+        "keywords": ["multimodal", "alignment", "multi-turn", "post-training", "test-time scaling", "reinforcement learning"],
+        "interests": "Post-training and test-time scaling methods for aligned multimodal LLMs, especially RL-based approaches for multi-turn tasks."
     },
     "U078YHXKTU7": {
         "name": "Eunhye",
         "keywords": ["sensemaking", "decision making", "search", "adaptive systems"],
-        "interests": "Eunhye is interested in building adaptive systems that support human sensemaking, decision making, and information search in complex domains."
+        "interests": "Adaptive systems that support information search, sensemaking, and complex decision making."
     },
     "U079D5P6P3M": {
         "name": "Heechan",
         "keywords": ["Qualitative research", "Explainable", "Dataset Evaluation", "Simulation", "Software engineering"],
-        "interests": "Heechan researches NLP and LLM evaluation, using qualitative and explainable AI methods to align systems with human intent and collaboration needs."
+        "interests": "Qualitative and explainable evaluation of NLP datasets and LLM-based software tools, focusing on dataset evaluation, simulation frameworks, and software engineering workflows."
     },
     "U07ABUCJWDT": {
         "name": "Minju Yoo",
         "keywords": ["education", "learning", "metacognition", "student", "simulation", "chat analysis"],
-        "interests": "Minju is passionate about AI in education, with a focus on metacognition, pedagogical conversational agents, and how students collaborate with teachers through AI."
+        "interests": "AI in education for student learning and metacognition, using simulation and chat analysis of student–teacher conversations."
     },
     "U07B3LG8M5E": {
         "name": "Hyehyun",
         "keywords": ["Accessibility", "Senior", "Older Adults", "Autonomy", "Borderline"],
-        "interests": "Hyehyun is committed to improving accessibility and supporting older adults in becoming proficient with technology through Human-AI and Human-Agent interaction. She is also interested in people's perception about technology and borderline of technical usage."
+        "interests": "Research on accessibility and Human–AI interaction for older adults, focusing on autonomy, technology proficiency, and human perception of technology boundaries."
     },
     "U07PC9NTTNK": {
         "name": "Seungju",
         "keywords": ["education", "learning", "accessibility", "overreliance", "cognitive", "emotion"],
-        "interests": "Seungju studies how people learn with GenAI and explores ways to foster learning communities that integrate accessibility and emotional factors."
+        "interests": "How learners use GenAI in education, including accessibility, overreliance, cognitive load, and emotional factors."
     },
     "U083D8Y0YJE": {
         "name": "Gosu",
         "keywords": ["job", "psychology", "persona"],
-        "interests": "Gosu examines how AI transforms professional roles and identities, with a psychological perspective on personas and work."
+        "interests": "Psychological and persona-based perspectives on how AI changes jobs, roles, and work identities."
     },
     "U086M1L2F27": {
         "name": "Seoyeon",
         "keywords": ["2D Vision", "3D Vision", "Vision-Language Models", "UI/UX"],
-        "interests": "Seoyeon focuses on Human-AI interaction in multimodal systems, particularly on vision-language models and user interface design for creativity."
+        "interests": "Human–AI interaction and UI/UX design for 2D/3D vision and vision–language models in creative tasks."
     },
     "U086M1LK65R": {
         "name": "Nadia",
         "keywords": ["information processing", "response quality", "content quality"],
-        "interests": "Nadia is interested in designing proactive agents that help people process information efficiently and choose high-quality content with reduced cognitive burden."
+        "interests": "Proactive agents that support information processing and help users choose high-quality responses and content."
     },
     "U08DG6LRQ3V": {
         "name": "Jenny",
-        "keywords": ["reasoning", "hallucination", "efficiency", "token level confidence"],
-        "interests": "Jenny investigates LLM reasoning, hallucination, and confidence, and explores agentic systems and AI personas that can support more reliable interactions."
+        "keywords": ["hallucination", "efficiency", "token level confidence"],
+        "interests": "Methods for analyzing and improving LLM reasoning and hallucination using token-level confidence, uncertainty estimation, and efficiency-focused model designs."
     },
     "U08EN6WDKCP": {
         "name": "Sehoon Lim",
         "keywords": ["Creativity Support Tool", "Persona", "Design", "Art", "music", "movie"],
-        "interests": "Sehoon is fascinated by creativity and art, studying how AI can support design and help people understand the rationale behind artistic preferences."
+        "interests": "Creativity support tools and personas for art, music, and movies that reveal and shape user preferences."
     },
     "U090X2M5P8B": {
         "name": "Sean Kim",
         "keywords": ["education", "learning", "understanding", "social"],
-        "interests": "Sean explores ways to improve learning experiences through education research, while also pursuing projects in visualization and social problem-solving."
+        "interests": "Educational systems that improve learner understanding and support socially grounded learning and discussion."
     },
     "U090X2QH2QK": {
         "name": "Minbeom",
         "keywords": ["video", "tutorial"],
-        "interests": "Minbeom is interested in Human-AI collaboration for creative content creation, focusing on video tutorials."
+        "interests": "Human–AI collaboration for designing effective video tutorials and instructional video content."
     },
     "U090X2ST9NF": {
         "name": "Daho Jung",
         "keywords": ["Education", "Economy", "simulation"],
-        "interests": "Daho is interested in simulating human behavior with LLMs for education and exploring the broader economic impacts of AI, including productivity and labor markets."
+        "interests": "Simulation-based studies of education and the economic impact of AI on productivity and labor markets."
     },
     "U090X2UUAN7": {
         "name": "Shujun",
         "keywords": ["video", "learning", "design methods"],
-        "interests": "Shujun studies video-assisted learning and design methods, with additional interest in healthcare-related educational tools."
+        "interests": "Video-based learning environments and design methods for educational and healthcare tools."
     },
     "U090X2ZDC91": {
         "name": "Hayeon",
         "keywords": ["education", "accessibility", "UI/UX"],
-        "interests": "Hayeon focuses on reducing the digital access gap in education by designing accessible technologies for disabled groups and seniors."
+        "interests": "Accessible educational technologies and UI/UX design that reduce digital access gaps."
     },
     "U1LB1DXJS": {
         "name": "Juho Kim",
         "keywords": ["Future of Work", "Learning at Scale", "Creativity Support", "Interaction-Centric"],
-        "interests": "Juho’s research in HCI and Human-AI interaction centers on building interactive and intelligent systems that support learning, collaboration, and creativity at scale."
+        "interests": "Interaction-centric systems for learning at scale, creativity support, and the future of work with AI."
     },
     "U3M5HJ7MX": {
         "name": "Eunyoung",
         "keywords": ["social", "education", "civic", "policy", "learning", "discussion"],
-        "interests": "Eunyoung studies social computing and interface design, focusing on how people interpret, discuss, and interact with complex information."
+        "interests": "Social computing and educational interfaces that support civic discussion, policy understanding, and learning."
     },
     "U4D956LSC": {
         "name": "Hyunwoo Kim",
         "keywords": ["decisionmaking", "civic engagement", "critical thinking", "online discussions"],
-        "interests": "Hyunwoo designs systems that foster critical thinking and informed decision-making in online discussions, with emphasis on civic engagement."
+        "interests": "Systems that foster critical thinking and informed decision making in online civic discussions."
     },
     "U8JLRRXPB": {
         "name": "taesoo",
         "keywords": ["Reasoning", "evaluation"],
-        "interests": "Taesoo focuses on reasoning and evaluation in NLP, aiming to design more human-centered AI models."
+        "interests": "Human-centered evaluation of reasoning in NLP and LLM models."
     },
     "UAP5VEP2R": {
         "name": "Yoonseo",
-        "keywords": ["decision making support", "qualitative", "UX", "Responsible", "design methods", "social computing", "crowdsourcing", "stakeholder"],
-        "interests": "Yoonseo explores user-centered design and Responsible AI, simulating user representations to help designers create socially beneficial technologies."
+        "keywords": ["decision making", "qualitative", "design", "social computing", "crowdsourcing", "stakeholder"],
+        "interests": "Qualitative and social computing approaches to decision making, crowdsourcing, and stakeholder-centered design."
     },
     "UUQ287SEQ": {
         "name": "Yoonjoo",
         "keywords": ["alignment", "human augmentation", "evaluation"],
-        "interests": "Yoonjoo is interested in aligning AI with human cognition to augment cognitive abilities, focusing on evaluation and human augmentation."
+        "interests": "Evaluation of aligned AI systems that augment human cognition and capabilities."
     },
 }
