@@ -147,11 +147,11 @@ def handle_message(event, say, client, logger):
             "source": source_link # e.g., https://arxiv.org/abs/2508.00143
         })
         extracted = extract_text_from_pdf(pdf_path)
-        post_summary_reply(client, channel_id, thread_ts, extracted)
+        post_summary_reply(client, channel_id, thread_ts, extracted, uploader_id=user_id)
         return
 
 # === 요약 결과 전송 ===
-def post_summary_reply(client, channel, thread_ts, text):
+def post_summary_reply(client, channel, thread_ts, text, uploader_id=None):
     client.chat_postMessage(
         channel=channel,
         thread_ts=thread_ts,
@@ -171,7 +171,7 @@ def post_summary_reply(client, channel, thread_ts, text):
     if keywords:
         tagger_input += "\n\nPaper Keywords: " + ", ".join(keywords)
 
-    matched_users, sim_dict = match_top_n_members(tagger_input, top_n=3, return_similarities=True, threshold=0.5)
+    matched_users, sim_dict = match_top_n_members(tagger_input, top_n=3, return_similarities=True, threshold=0.5, exclude_ids=[uploader_id] if uploader_id else None)
     member_db = {m["slack_id"]: m for m in get_all_members()}
 
     user_reasons = []

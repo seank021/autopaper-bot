@@ -13,12 +13,11 @@ def match_top_n_members(
     top_n=3,
     weights=None, # 인터페이스 유지용 (사용 안 함)
     return_similarities=False,
-    threshold=0.6 # LLM 점수 기준 임계값
+    threshold=0.6, # LLM 점수 기준 임계값
+    exclude_ids=None,
 ):
-    """
-    LLM만 사용해서, 페이퍼 요약(summary_text)와 멤버 프로필을 기반으로
-    이 페이퍼에 가장 잘 맞는 멤버의 slack_id 리스트와 LLM 기반 score를 반환.
-    """
+    exclude_ids = set(exclude_ids or [])
+
     members = get_all_members()
     if not members:
         return ([], {}) if return_similarities else []
@@ -30,6 +29,8 @@ def match_top_n_members(
     for m in members:
         slack_id = m.get("slack_id")
         if not slack_id:
+            continue
+        if slack_id in exclude_ids:
             continue
 
         valid_slack_ids.add(slack_id)
@@ -103,7 +104,10 @@ def match_top_n_members(
     - Each "score" must be a number between 0.0 and 1.0.
     - Only use slack_ids that appear in the member list provided.
     - DO NOT make up or hallucinate new slack_ids.
+    - DO NOT select any slack_id listed under "Excluded IDs".
     """.strip()
+
+    excluded_block = ", ".join(sorted(exclude_ids)) if exclude_ids else "(none)"
 
     # Few-shot 예시 포함 프롬프트
     user_prompt = f"""
@@ -135,6 +139,9 @@ def match_top_n_members(
 
     # Members (valid candidates)
     {members_block}
+
+    # Excluded IDs (must NOT select)
+    {excluded_block}
 
     # Selection Specification
     - Maximum number of members to select: {top_n}
@@ -217,11 +224,13 @@ def match_top_n_members(
                 chosen_members = []
             continue
 
-    top_users = [sid for sid, _ in chosen_members]
+    top_users = [sid for sid, _ in chosen_members if sid not in exclude_ids]
 
     # similarity_scores: LLM이 준 score 그대로 반영, 선택 안 된 멤버는 0.0
     similarity_scores = {sid: 0.0 for sid in valid_slack_ids}
     for sid, sc in chosen_members:
+        if sid in exclude_ids:
+            continue
         similarity_scores[sid] = round(float(sc), 4)
 
     if return_similarities:
